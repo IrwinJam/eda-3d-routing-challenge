@@ -1,0 +1,25 @@
+{
+ "format": "m3d-suite",
+ "tier": "stress",
+ "master_seed": 20260923,
+ "layers": 6,
+ "n_cases": 1,
+ "cases": [
+  {
+   "name": "case_01",
+   "seed": 2096705775,
+   "width": 530,
+   "height": 530,
+   "layers": 6,
+   "n_cells": 1298,
+   "n_pins": 2612,
+   "n_nets": 901,
+   "baseline_router": "baseline",
+   "baseline_total": 1144904,
+   "gen_attempts": 1,
+   "gen_seconds": 1977.89,
+   "instance_file": "case_01.json",
+   "reference_file": "reference/case_01.sol.json"
+  }
+ ]
+}
