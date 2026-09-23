@@ -2,7 +2,7 @@ SUITE ?= benchmarks
 CASE  ?= benchmarks/case_01.json
 SUBS  ?= examples/submissions
 
-.PHONY: generate baseline baseline-suite example score-example evaluate visualize test info  gif gif-suite  generate-all leaderboard pareto
+.PHONY: generate baseline baseline-suite example score-example evaluate visualize test info gif gif-suite generate-all generate-stress leaderboard pareto
 
 generate:
 	python -m m3d.cli generate --out $(SUITE)
@@ -38,7 +38,12 @@ gif-suite:
 	python -m m3d.cli animate --mode suite --suite $(SUITE) --out docs/suite_sweep.gif
 
 generate-all:
-	python -m m3d.cli generate --tier all
+	python -m m3d.cli generate --tier intro
+	python -m m3d.cli generate --tier hard
+	python -m m3d.cli generate --tier scale
+
+generate-stress:   ## ~30 min: one 530x530 case whose baseline takes ~30 minutes
+	python -m m3d.cli generate --tier stress
 
 leaderboard:
 	python -m m3d.cli leaderboard --suite benchmarks_hard --submissions-root examples/leaderboard_hard --md examples/leaderboard_hard.md

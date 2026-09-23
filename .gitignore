@@ -6,6 +6,7 @@ __pycache__/
 !benchmarks/reference/*.sol.json
 !benchmarks_hard/reference/*.sol.json
 !benchmarks_scale/reference/*.sol.json
+!benchmarks_stress/reference/*.sol.json
 !examples/submissions/*.sol.json
 !examples/leaderboard_hard/*/*.sol.json
 .venv/

@@ -30,9 +30,10 @@ from .generator import GenConfig, generate_feasible
 MASTER_SEED = 20260923
 DEFAULT_LAYERS = 6          # configurable; the final layer count can change here
 
-TIERS = ("intro", "hard", "scale")
-_TIER_DIR = {"intro": "benchmarks", "hard": "benchmarks_hard", "scale": "benchmarks_scale"}
-_TIER_SALT = {"intro": 0, "hard": 101, "scale": 202}
+TIERS = ("intro", "hard", "scale", "stress")
+_TIER_DIR = {"intro": "benchmarks", "hard": "benchmarks_hard",
+             "scale": "benchmarks_scale", "stress": "benchmarks_stress"}
+_TIER_SALT = {"intro": 0, "hard": 101, "scale": 202, "stress": 303}
 
 
 def tier_dir(tier: str) -> str:
@@ -81,6 +82,22 @@ def suite_configs(tier: str = "intro", layers: int = DEFAULT_LAYERS,
                 max_fanout=5, frac_local=0.5, cell_min=2, cell_max=3,
                 pins_per_cell=3, cell_gap=1,
                 seed=seed, master_seed=master_seed, max_attempts=16,
+                router="baseline"))
+    elif tier == "stress":
+        # One giant, sparse case sized so the simple baseline takes ~30 minutes.
+        # Route time fits time ~ 7e-6 * n_nets * side^2 (verified to side 240);
+        # 530x530x6 with ~900 nets predicts ~1770 s. Sparse (rip-ups ~ 0), so the
+        # baseline certifies it in a single pass.
+        n = 1
+        for i in range(n):
+            seed = rng.randrange(1, 2 ** 31 - 1)
+            side = 530
+            cfgs.append(GenConfig(
+                name=f"case_{i + 1:02d}", width=side, height=side, layers=layers,
+                center_delay=1, layer_slope=1, via_delay=3,
+                n_nets=901, frac_cross=0.4, p_twopin=0.65, max_fanout=5,
+                frac_local=0.5, cell_min=2, cell_max=3, pins_per_cell=3, cell_gap=1,
+                seed=seed, master_seed=master_seed, max_attempts=3,
                 router="baseline"))
     else:
         raise ValueError(f"unknown tier {tier!r}; choose from {TIERS}")

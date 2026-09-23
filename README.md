@@ -36,6 +36,7 @@ tier's baseline.
 | **intro** | `benchmarks/` | 20 | 92×92×6, 139 nets, 514 pins | simple rip-up router | On-ramp. **Sparse** (~6% of edges used); the simple baseline routes every case with **0 rip-ups**, so it is easy and conventional — good for getting a submission working. |
 | **hard** | `benchmarks_hard/` | 9 | 40×40×6, 104 nets, 323 pins | **negotiated-congestion** router | **Contended.** Pins and nets crowd the cheap middle layers, so the delay-vs-detour tradeoff is the crux and **legality itself needs a real router**: the simple rip-up baseline **fails or thrashes** on most cases (thousands of rip-ups), while the negotiated router certifies a legal solution. Beating that baseline is the real contest. |
 | **scale** | `benchmarks_scale/` | 8 | 156×156×6, 265 nets, 766 pins | simple router | **Large.** Big enough that **runtime is a first-class axis** (the baseline itself takes ~10–70 s/case), which is what the runtime-vs-delay Pareto below measures. |
+| **stress** | `benchmarks_stress/` | 1 | 530×530×6, 901 nets, ~2.4k pins | simple router | **~30-minute baseline.** One giant sparse case for stress-testing router runtime and scaling; the reference (simple) baseline itself takes about half an hour to route it. Baseline route time fits `≈ 7e-6 · nets · side²`, so you can dial any target wall time in `m3d/suite.py`. |
 
 Is the intro tier "too easy / conventional"? Yes, deliberately — it is the
 on-ramp. The **hard** tier is where the monolithic-3D structure bites: the
