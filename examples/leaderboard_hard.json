@@ -1,0 +1,260 @@
+{
+ "format": "m3d-leaderboard-multi",
+ "suite": "hard",
+ "n_cases": 9,
+ "pareto_frontier": [
+  "negotiated",
+  "negotiated_x2"
+ ],
+ "ranking": [
+  {
+   "name": "negotiated_x2",
+   "complete": true,
+   "aggregate": 1.0167566707002897,
+   "n_legal": 9,
+   "n_cases": 9,
+   "total_delay": 198763,
+   "total_runtime": 177.01299999999998,
+   "cases": [
+    {
+     "case": "case_01",
+     "legal": true,
+     "total_delay": 11434,
+     "baseline_delay": 11938,
+     "ratio": 1.0440790624453384,
+     "runtime_s": 6.986
+    },
+    {
+     "case": "case_02",
+     "legal": true,
+     "total_delay": 18760,
+     "baseline_delay": 18910,
+     "ratio": 1.0079957356076759,
+     "runtime_s": 10.506
+    },
+    {
+     "case": "case_03",
+     "legal": true,
+     "total_delay": 14724,
+     "baseline_delay": 14724,
+     "ratio": 1.0,
+     "runtime_s": 11.597
+    },
+    {
+     "case": "case_04",
+     "legal": true,
+     "total_delay": 18077,
+     "baseline_delay": 18077,
+     "ratio": 1.0,
+     "runtime_s": 16.719
+    },
+    {
+     "case": "case_05",
+     "legal": true,
+     "total_delay": 20201,
+     "baseline_delay": 21051,
+     "ratio": 1.042077124894807,
+     "runtime_s": 17.093
+    },
+    {
+     "case": "case_06",
+     "legal": true,
+     "total_delay": 27134,
+     "baseline_delay": 27134,
+     "ratio": 1.0,
+     "runtime_s": 22.579
+    },
+    {
+     "case": "case_07",
+     "legal": true,
+     "total_delay": 31021,
+     "baseline_delay": 31341,
+     "ratio": 1.0103155926630347,
+     "runtime_s": 27.332
+    },
+    {
+     "case": "case_08",
+     "legal": true,
+     "total_delay": 30886,
+     "baseline_delay": 30886,
+     "ratio": 1.0,
+     "runtime_s": 32.185
+    },
+    {
+     "case": "case_09",
+     "legal": true,
+     "total_delay": 26526,
+     "baseline_delay": 27802,
+     "ratio": 1.0481037472668326,
+     "runtime_s": 32.016
+    }
+   ]
+  },
+  {
+   "name": "negotiated",
+   "complete": true,
+   "aggregate": 1.0,
+   "n_legal": 9,
+   "n_cases": 9,
+   "total_delay": 201863,
+   "total_runtime": 85.205,
+   "cases": [
+    {
+     "case": "case_01",
+     "legal": true,
+     "total_delay": 11938,
+     "baseline_delay": 11938,
+     "ratio": 1.0,
+     "runtime_s": 3.332
+    },
+    {
+     "case": "case_02",
+     "legal": true,
+     "total_delay": 18910,
+     "baseline_delay": 18910,
+     "ratio": 1.0,
+     "runtime_s": 5.235
+    },
+    {
+     "case": "case_03",
+     "legal": true,
+     "total_delay": 14724,
+     "baseline_delay": 14724,
+     "ratio": 1.0,
+     "runtime_s": 5.524
+    },
+    {
+     "case": "case_04",
+     "legal": true,
+     "total_delay": 18077,
+     "baseline_delay": 18077,
+     "ratio": 1.0,
+     "runtime_s": 7.338
+    },
+    {
+     "case": "case_05",
+     "legal": true,
+     "total_delay": 21051,
+     "baseline_delay": 21051,
+     "ratio": 1.0,
+     "runtime_s": 8.289
+    },
+    {
+     "case": "case_06",
+     "legal": true,
+     "total_delay": 27134,
+     "baseline_delay": 27134,
+     "ratio": 1.0,
+     "runtime_s": 10.946
+    },
+    {
+     "case": "case_07",
+     "legal": true,
+     "total_delay": 31341,
+     "baseline_delay": 31341,
+     "ratio": 1.0,
+     "runtime_s": 13.392
+    },
+    {
+     "case": "case_08",
+     "legal": true,
+     "total_delay": 30886,
+     "baseline_delay": 30886,
+     "ratio": 1.0,
+     "runtime_s": 15.502
+    },
+    {
+     "case": "case_09",
+     "legal": true,
+     "total_delay": 27802,
+     "baseline_delay": 27802,
+     "ratio": 1.0,
+     "runtime_s": 15.647
+    }
+   ]
+  },
+  {
+   "name": "negotiated_fast",
+   "complete": false,
+   "aggregate": 0.0,
+   "n_legal": 8,
+   "n_cases": 9,
+   "total_delay": null,
+   "total_runtime": 61.74199999999999,
+   "cases": [
+    {
+     "case": "case_01",
+     "legal": true,
+     "total_delay": 11552,
+     "baseline_delay": 11938,
+     "ratio": 1.0334141274238227,
+     "runtime_s": 2.49
+    },
+    {
+     "case": "case_02",
+     "legal": false,
+     "total_delay": null,
+     "baseline_delay": 18910,
+     "ratio": null,
+     "runtime_s": 3.725
+    },
+    {
+     "case": "case_03",
+     "legal": true,
+     "total_delay": 15334,
+     "baseline_delay": 14724,
+     "ratio": 0.9602191209077866,
+     "runtime_s": 4.174
+    },
+    {
+     "case": "case_04",
+     "legal": true,
+     "total_delay": 18625,
+     "baseline_delay": 18077,
+     "ratio": 0.9705771812080537,
+     "runtime_s": 5.268
+    },
+    {
+     "case": "case_05",
+     "legal": true,
+     "total_delay": 21479,
+     "baseline_delay": 21051,
+     "ratio": 0.9800735602216119,
+     "runtime_s": 5.789
+    },
+    {
+     "case": "case_06",
+     "legal": true,
+     "total_delay": 28562,
+     "baseline_delay": 27134,
+     "ratio": 0.9500035011553812,
+     "runtime_s": 8.241
+    },
+    {
+     "case": "case_07",
+     "legal": true,
+     "total_delay": 30327,
+     "baseline_delay": 31341,
+     "ratio": 1.03343555247799,
+     "runtime_s": 9.535
+    },
+    {
+     "case": "case_08",
+     "legal": true,
+     "total_delay": 31918,
+     "baseline_delay": 30886,
+     "ratio": 0.9676671470643524,
+     "runtime_s": 11.547
+    },
+    {
+     "case": "case_09",
+     "legal": true,
+     "total_delay": 27414,
+     "baseline_delay": 27802,
+     "ratio": 1.0141533523017436,
+     "runtime_s": 10.973
+    }
+   ]
+  }
+ ]
+}

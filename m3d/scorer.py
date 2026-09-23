@@ -106,3 +106,80 @@ def leaderboard(case_scores: List[CaseScore]) -> Leaderboard:
         aggregate = 0.0
     return Leaderboard(complete=complete, aggregate_score=aggregate,
                        n_cases=n, n_legal=n_legal, cases=case_scores)
+
+
+# --------------------------------------------------------------------------- #
+# Multi-submission leaderboard + Pareto support
+# --------------------------------------------------------------------------- #
+@dataclass
+class SubmissionScore:
+    name: str
+    complete: bool
+    aggregate: float
+    n_legal: int
+    n_cases: int
+    total_delay: Optional[int]        # sum of raw delays over cases (None if incomplete)
+    total_runtime: Optional[float]    # sum of per-case runtimes (None if unknown)
+    cases: List[CaseScore]
+
+    def to_dict(self) -> Dict:
+        return {
+            "name": self.name, "complete": self.complete,
+            "aggregate": self.aggregate, "n_legal": self.n_legal,
+            "n_cases": self.n_cases, "total_delay": self.total_delay,
+            "total_runtime": self.total_runtime,
+            "cases": [
+                {"case": c.case, "legal": c.legal, "total_delay": c.total_delay,
+                 "baseline_delay": c.baseline_delay, "ratio": c.ratio,
+                 "runtime_s": c.runtime_s} for c in self.cases
+            ],
+        }
+
+
+def score_submission_set(manifest: Dict, suite_dir: str, submission_dir: str,
+                         name: str, runtimes: Optional[Dict[str, float]] = None
+                         ) -> SubmissionScore:
+    import os
+    from .model import Instance, Submission
+    runtimes = runtimes or {}
+    cases: List[CaseScore] = []
+    for c in manifest["cases"]:
+        inst = Instance.load(os.path.join(suite_dir, c["instance_file"]))
+        sol = os.path.join(submission_dir, f"{inst.name}.sol.json")
+        rt = runtimes.get(inst.name)
+        if not os.path.exists(sol):
+            cases.append(CaseScore(inst.name, False, None, c["baseline_total"],
+                                   None, rt, ["submission file missing"]))
+            continue
+        cases.append(score_case(inst, Submission.load(sol), c["baseline_total"], rt))
+    lb = leaderboard(cases)
+    total_delay = sum(c.total_delay for c in cases) if lb.complete else None
+    have_rt = [c.runtime_s for c in cases if c.runtime_s is not None]
+    total_runtime = sum(have_rt) if have_rt else None
+    return SubmissionScore(name, lb.complete, lb.aggregate_score, lb.n_legal,
+                           lb.n_cases, total_delay, total_runtime, cases)
+
+
+def rank_submissions(subs: List[SubmissionScore]) -> List[SubmissionScore]:
+    # complete submissions first, then by aggregate desc, then total delay asc
+    return sorted(subs, key=lambda s: (not s.complete, -s.aggregate,
+                                       s.total_delay if s.total_delay is not None else 1 << 62))
+
+
+def pareto_frontier(points: List["SubmissionScore"]) -> List[str]:
+    """Names on the runtime-vs-total-delay Pareto frontier (minimize both).
+
+    Only complete submissions with a known runtime are eligible.
+    """
+    elig = [s for s in points if s.complete and s.total_runtime is not None
+            and s.total_delay is not None]
+    names = []
+    for s in elig:
+        dominated = any(
+            o is not s and o.total_runtime <= s.total_runtime
+            and o.total_delay <= s.total_delay
+            and (o.total_runtime < s.total_runtime or o.total_delay < s.total_delay)
+            for o in elig)
+        if not dominated:
+            names.append(s.name)
+    return names

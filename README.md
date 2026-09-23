@@ -22,8 +22,29 @@ nets are colored; the faint grey is the whole routing for context.*
 
 ![suite sweep](docs/suite_sweep.gif)
 
-*The 20-case size ladder (each case's reference solution, flattened top-down),
-growing grid, cell, pin and net counts from case_01 to case_20.*
+*The intro 20-case size ladder (each case's reference solution, flattened
+top-down), growing grid, cell, pin and net counts from case_01 to case_20.*
+
+## Difficulty tiers
+
+The challenge ships three tiers, from an easy on-ramp to genuinely hard. Each is
+its own directory with its own manifest; each case is normalized against its own
+tier's baseline.
+
+| Tier | Dir | Cases | Largest case | Baseline (to beat) | What makes it hard |
+|---|---|---|---|---|---|
+| **intro** | `benchmarks/` | 20 | 92×92×6, 139 nets, 514 pins | simple rip-up router | On-ramp. **Sparse** (~6% of edges used); the simple baseline routes every case with **0 rip-ups**, so it is easy and conventional — good for getting a submission working. |
+| **hard** | `benchmarks_hard/` | 9 | 40×40×6, 104 nets, 323 pins | **negotiated-congestion** router | **Contended.** Pins and nets crowd the cheap middle layers, so the delay-vs-detour tradeoff is the crux and **legality itself needs a real router**: the simple rip-up baseline **fails or thrashes** on most cases (thousands of rip-ups), while the negotiated router certifies a legal solution. Beating that baseline is the real contest. |
+| **scale** | `benchmarks_scale/` | 8 | 156×156×6, 265 nets, 766 pins | simple router | **Large.** Big enough that **runtime is a first-class axis** (the baseline itself takes ~10–70 s/case), which is what the runtime-vs-delay Pareto below measures. |
+
+Is the intro tier "too easy / conventional"? Yes, deliberately — it is the
+on-ramp. The **hard** tier is where the monolithic-3D structure bites: the
+delay-graded layer stack is only interesting when the cheap layers are scarce and
+contended, and there the problem stops being a clean maze and becomes a real
+congestion-plus-delay optimization that a naive router cannot even legalize. The
+**scale** tier adds the runtime dimension. Everything is parametric
+(`m3d/suite.py`, `m3d/generator.py::GenConfig`), so you can push grids, nets,
+fanout, contention, and layer count further.
 
 ---
 
@@ -103,15 +124,18 @@ m3d/                 the toolkit (pure stdlib)
   checker.py         independent legality checker + delay recomputation
   scorer.py          per-case scoring + normalized leaderboard
   baseline.py        baseline router (Dijkstra trees + rip-up-and-reroute)
-  suite.py           the released 20-case suite (seeds + size ladder)
-  viz.py             matplotlib visualization
+  negotiated.py      negotiated-congestion router (PathFinder-style; hard tier)
+  suite.py           the released tiers (intro / hard / scale) + size ladders
+  scorer.py          per-case scoring, leaderboard, Pareto frontier
+  viz.py             matplotlib visualization + Pareto plot
+  anim.py            animated GIF renderers
   cli.py             command-line entry point
-benchmarks/          the 20 generated cases + suite.json manifest
-  case_01.json ...   participant-facing instances
-  reference/         verified reference solutions (kept separate from inputs)
-examples/            example participant router + a scored example submission
-tests/               unit + end-to-end tests
-docs/                images and the format reference (FORMATS.md)
+benchmarks/          intro tier: 20 cases + suite.json + reference/
+benchmarks_hard/     hard (contended) tier: 9 cases + suite.json + reference/
+benchmarks_scale/    scale (large) tier: 8 cases + suite.json + reference/
+examples/            example participant router; example + leaderboard submissions
+tests/               unit + end-to-end tests (33)
+docs/                images, the Pareto plot, and the format reference (FORMATS.md)
 ```
 
 ---
@@ -122,8 +146,10 @@ Requires Python 3.8+. For visualization: `pip install -r requirements.txt`
 (matplotlib). Run all commands from the repository root.
 
 ```bash
-# regenerate the 20-case suite deterministically (writes benchmarks/)
-python -m m3d.cli generate --out benchmarks
+# regenerate a tier deterministically (intro -> benchmarks/, hard -> benchmarks_hard/,
+# scale -> benchmarks_scale/, or all three)
+python -m m3d.cli generate --tier intro
+python -m m3d.cli generate --tier all
 
 # run the baseline router on one case
 python -m m3d.cli baseline --case benchmarks/case_01.json --out my.sol.json
@@ -212,6 +238,38 @@ The baseline itself is the normalization reference; its per-case totals are in
 
 ---
 
+## 5b. Leaderboard and the runtime-vs-delay Pareto
+
+To compare several routers on a tier, put each one's solutions (plus an optional
+`runtime.json` of `{case: seconds}`) in its own subdirectory and rank them:
+
+```bash
+# produce a few submissions for the hard tier (each writes runtime.json)
+python -m m3d.cli run-suite --suite benchmarks_hard --router negotiated_fast --out-dir subs/fast
+python -m m3d.cli run-suite --suite benchmarks_hard --router negotiated      --out-dir subs/negotiated
+python -m m3d.cli run-suite --suite benchmarks_hard --router negotiated2     --out-dir subs/negotiated_x2
+
+# rank them (aggregate score; complete submissions first) and mark the Pareto set
+python -m m3d.cli leaderboard --suite benchmarks_hard --submissions-root subs --md board.md
+
+# plot total runtime vs total raw delay, with the Pareto frontier
+python -m m3d.cli pareto --suite benchmarks_hard --submissions-root subs --out pareto.png
+```
+
+The ranked leaderboard sorts complete submissions by aggregate score (then by
+total delay); a submission that is not legal on every case is listed but not
+ranked. The Pareto plot shows one point per submission — **total runtime vs total
+raw routing delay** — and highlights the frontier (you cannot lower delay without
+spending more time). A worked example over the hard tier lives in
+`examples/leaderboard_hard/` (three negotiated variants); its board is
+`examples/leaderboard_hard.md` and the plot is below.
+
+![runtime vs total delay Pareto](docs/pareto.png)
+
+*Hard tier: `negotiated` (faster, higher delay) and `negotiated_x2` (best-of-two
+orders — ~2× the runtime for ~1.5% lower delay) are both Pareto-optimal;
+`negotiated_fast` is faster still but illegal on one case, so it is not ranked.*
+
 ## 6. The baseline router
 
 `m3d/baseline.py` is a deliberately simple, deterministic reference: it routes
@@ -220,6 +278,15 @@ nets one at a time (largest bounding box first), grows each net as a shortest
 uses **rip-up-and-reroute** when a net is blocked. It is not state of the art;
 it exists to establish a usable reference score and to certify that generated
 instances are routable. Beating it is the point.
+
+For the contended **hard** tier, that simple router is not strong enough (it
+fails or thrashes), so a second reference — `m3d/negotiated.py`, a PathFinder-style
+**negotiated-congestion** router — certifies feasibility and provides the hard
+tier's baseline. It routes every net each round allowing temporary overuse, then
+raises a per-resource history cost on anything overused so nets negotiate away
+from contention, and (after the first pass) only reroutes the nets touching an
+overused resource. When uncongested it reduces to per-net shortest paths, so it
+preserves the delay objective on sparse instances. Both routers are deterministic.
 
 ---
 

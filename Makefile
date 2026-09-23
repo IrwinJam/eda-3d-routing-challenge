@@ -2,7 +2,7 @@ SUITE ?= benchmarks
 CASE  ?= benchmarks/case_01.json
 SUBS  ?= examples/submissions
 
-.PHONY: generate baseline baseline-suite example score-example evaluate visualize test info  gif gif-suite
+.PHONY: generate baseline baseline-suite example score-example evaluate visualize test info  gif gif-suite  generate-all leaderboard pareto
 
 generate:
 	python -m m3d.cli generate --out $(SUITE)
@@ -36,3 +36,12 @@ gif:
 
 gif-suite:
 	python -m m3d.cli animate --mode suite --suite $(SUITE) --out docs/suite_sweep.gif
+
+generate-all:
+	python -m m3d.cli generate --tier all
+
+leaderboard:
+	python -m m3d.cli leaderboard --suite benchmarks_hard --submissions-root examples/leaderboard_hard --md examples/leaderboard_hard.md
+
+pareto:
+	python -m m3d.cli pareto --suite benchmarks_hard --submissions-root examples/leaderboard_hard --out docs/pareto.png

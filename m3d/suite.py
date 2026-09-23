@@ -1,15 +1,21 @@
-"""The released 20-case benchmark suite: a fixed master seed, a reproducible
-per-case seed schedule, and a size ladder that grows the grid, cell/pin count and
-net count together, mixing local and long-distance connections.
+"""The released benchmark tiers, each a fixed master seed + reproducible per-case
+seed schedule and a size ladder.
 
-Building the suite writes, for each case:
+* ``intro`` (dir ``benchmarks/``)      — 20 cases; the easy on-ramp. Sparse; the
+  simple rip-up baseline routes every case with no congestion. Baseline = simple.
+* ``hard``  (dir ``benchmarks_hard/``) — dense, contended cases. The cheap middle
+  layers and the die layers are crowded with pins and nets, so legality itself
+  needs a real router: the simple baseline fails or thrashes on most of them,
+  while the negotiated-congestion router certifies a legal solution. Baseline =
+  negotiated (a much stronger reference to beat).
+* ``scale`` (dir ``benchmarks_scale/``) — large but sparser cases (up to
+  160x160x6, hundreds of nets, >1k pins) where runtime is a first-class factor.
+  Baseline = simple (routes with ~no congestion, so it certifies quickly).
 
-* ``benchmarks/case_NN.json``            — the participant-facing instance;
-* ``benchmarks/reference/case_NN.sol.json`` — the verified reference solution
-  (baseline output), kept separate from participant inputs;
-
-and a ``benchmarks/suite.json`` manifest recording every seed, the generation
-parameters and the baseline total for each case (the scoring baseline).
+Building a tier writes ``<dir>/case_NN.json``, ``<dir>/reference/case_NN.sol.json``
+(the verified reference = the tier's baseline output, kept separate from inputs),
+and ``<dir>/suite.json`` recording seeds, parameters and the per-case baseline
+total (the scoring normalization).
 """
 from __future__ import annotations
 
@@ -17,61 +23,84 @@ import json
 import os
 import random
 import time
-from dataclasses import asdict
 from typing import Dict, List
 
 from .generator import GenConfig, generate_feasible
 
 MASTER_SEED = 20260923
-N_CASES = 20
 DEFAULT_LAYERS = 6          # configurable; the final layer count can change here
 
+TIERS = ("intro", "hard", "scale")
+_TIER_DIR = {"intro": "benchmarks", "hard": "benchmarks_hard", "scale": "benchmarks_scale"}
+_TIER_SALT = {"intro": 0, "hard": 101, "scale": 202}
 
-def suite_configs(layers: int = DEFAULT_LAYERS,
+
+def tier_dir(tier: str) -> str:
+    return _TIER_DIR[tier]
+
+
+def suite_configs(tier: str = "intro", layers: int = DEFAULT_LAYERS,
                   master_seed: int = MASTER_SEED) -> List[GenConfig]:
-    """Return the 20 GenConfigs (deterministic per-case seed schedule)."""
-    base_rng = random.Random(master_seed)
+    rng = random.Random(master_seed + _TIER_SALT[tier])
     cfgs: List[GenConfig] = []
-    for i in range(N_CASES):
-        case_seed = base_rng.randrange(1, 2 ** 31 - 1)
-        side = 16 + 4 * i                       # 16 .. 92
-        n_nets = 6 + 7 * i                      # 6 .. 139
-        cfg = GenConfig(
-            name=f"case_{i + 1:02d}",
-            width=side,
-            height=side,
-            layers=layers,
-            center_delay=1,
-            layer_slope=1,
-            via_delay=3,
-            n_nets=n_nets,
-            frac_cross=0.4,
-            p_twopin=max(0.45, 0.70 - 0.015 * i),
-            max_fanout=4 + i // 5,              # 4 .. 7
-            frac_local=0.5,
-            cell_min=2,
-            cell_max=4,
-            pins_per_cell=3,
-            seed=case_seed,
-            master_seed=master_seed,
-            max_attempts=16,
-        )
-        cfgs.append(cfg)
+    if tier == "intro":
+        n = 20
+        for i in range(n):
+            seed = rng.randrange(1, 2 ** 31 - 1)
+            side = 16 + 4 * i                       # 16 .. 92
+            cfgs.append(GenConfig(
+                name=f"case_{i + 1:02d}", width=side, height=side, layers=layers,
+                center_delay=1, layer_slope=1, via_delay=3,
+                n_nets=6 + 7 * i, frac_cross=0.4,
+                p_twopin=max(0.45, 0.70 - 0.015 * i), max_fanout=4 + i // 5,
+                frac_local=0.5, cell_min=2, cell_max=4, pins_per_cell=3, cell_gap=1,
+                seed=seed, master_seed=master_seed, max_attempts=16,
+                router="baseline"))
+    elif tier == "hard":
+        n = 9
+        for i in range(n):
+            seed = rng.randrange(1, 2 ** 31 - 1)
+            side = 24 + 2 * i                       # 24 .. 40
+            cfgs.append(GenConfig(
+                name=f"case_{i + 1:02d}", width=side, height=side, layers=layers,
+                center_delay=1, layer_slope=1, via_delay=3,
+                n_nets=round(2.6 * side), frac_cross=0.45, p_twopin=0.6,
+                max_fanout=6, frac_local=0.12, cell_min=2, cell_max=2,
+                pins_per_cell=2, cell_gap=0,
+                seed=seed, master_seed=master_seed, max_attempts=10,
+                router="negotiated"))
+    elif tier == "scale":
+        n = 8
+        for i in range(n):
+            seed = rng.randrange(1, 2 ** 31 - 1)
+            side = 100 + 8 * i                      # 100 .. 156
+            cfgs.append(GenConfig(
+                name=f"case_{i + 1:02d}", width=side, height=side, layers=layers,
+                center_delay=1, layer_slope=1, via_delay=3,
+                n_nets=round(1.7 * side), frac_cross=0.4, p_twopin=0.65,
+                max_fanout=5, frac_local=0.5, cell_min=2, cell_max=3,
+                pins_per_cell=3, cell_gap=1,
+                seed=seed, master_seed=master_seed, max_attempts=16,
+                router="baseline"))
+    else:
+        raise ValueError(f"unknown tier {tier!r}; choose from {TIERS}")
     return cfgs
 
 
-def build_suite(out_dir: str, layers: int = DEFAULT_LAYERS,
+def build_suite(out_dir: str, tier: str = "intro", layers: int = DEFAULT_LAYERS,
                 master_seed: int = MASTER_SEED, verbose: bool = True) -> Dict:
     ref_dir = os.path.join(out_dir, "reference")
     os.makedirs(ref_dir, exist_ok=True)
+    cfgs = suite_configs(tier=tier, layers=layers, master_seed=master_seed)
     manifest = {
         "format": "m3d-suite",
+        "tier": tier,
         "master_seed": master_seed,
         "layers": layers,
-        "n_cases": N_CASES,
+        "n_cases": len(cfgs),
         "cases": [],
     }
-    for cfg in suite_configs(layers=layers, master_seed=master_seed):
+    for cfg in cfgs:
         t0 = time.time()
         result = generate_feasible(cfg)
         dt = time.time() - t0
@@ -81,26 +110,20 @@ def build_suite(out_dir: str, layers: int = DEFAULT_LAYERS,
         inst.save(os.path.join(out_dir, inst_file))
         result.reference.save(os.path.join(out_dir, ref_file))
         entry = {
-            "name": cfg.name,
-            "seed": inst.seed,
-            "width": inst.width,
-            "height": inst.height,
-            "layers": inst.layers,
-            "n_cells": len(inst.cells),
-            "n_pins": len(inst.pins),
-            "n_nets": len(inst.nets),
+            "name": cfg.name, "seed": inst.seed,
+            "width": inst.width, "height": inst.height, "layers": inst.layers,
+            "n_cells": len(inst.cells), "n_pins": len(inst.pins),
+            "n_nets": len(inst.nets), "baseline_router": cfg.router,
             "baseline_total": result.baseline_total,
-            "gen_attempts": result.attempts,
-            "gen_seconds": round(dt, 2),
-            "instance_file": inst_file,
-            "reference_file": ref_file,
+            "gen_attempts": result.attempts, "gen_seconds": round(dt, 2),
+            "instance_file": inst_file, "reference_file": ref_file,
         }
         manifest["cases"].append(entry)
         if verbose:
-            print(f"  {cfg.name}: {inst.width}x{inst.height}x{inst.layers} grid, "
+            print(f"  [{tier}] {cfg.name}: {inst.width}x{inst.height}x{inst.layers}, "
                   f"{len(inst.nets)} nets, {len(inst.pins)} pins, "
-                  f"baseline={result.baseline_total}, "
-                  f"attempts={result.attempts}, {dt:.1f}s")
+                  f"baseline({cfg.router})={result.baseline_total}, "
+                  f"attempts={result.attempts}, {dt:.1f}s", flush=True)
     with open(os.path.join(out_dir, "suite.json"), "w") as fh:
         json.dump(manifest, fh, indent=1)
     return manifest

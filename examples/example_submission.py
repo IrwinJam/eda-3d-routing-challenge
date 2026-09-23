@@ -138,13 +138,18 @@ def main() -> int:
         import json
         man = json.load(open(os.path.join(args.suite, "suite.json")))
         os.makedirs(args.out_dir, exist_ok=True)
+        import time as _time
+        runtimes = {}
         for c in man["cases"]:
             inst = Instance.load(os.path.join(args.suite, c["instance_file"]))
+            t0 = _time.time()
             sub = route_instance(inst)
+            runtimes[inst.name] = round(_time.time() - t0, 3)
             res = check(inst, sub)
             out = os.path.join(args.out_dir, f"{inst.name}.sol.json")
             sub.save(out)
             print(f"{inst.name}: legal={res.legal} total={res.total_delay} -> {out}")
+        json.dump(runtimes, open(os.path.join(args.out_dir, "runtime.json"), "w"), indent=1)
         return 0
 
     inst = Instance.load(args.case)

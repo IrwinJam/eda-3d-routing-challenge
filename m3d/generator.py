@@ -50,12 +50,14 @@ class GenConfig:
     # cells / pins
     cell_min: int = 2             # cell footprint side (vertices)
     cell_max: int = 4
-    pins_per_cell: int = 3        # up to this many pins per cell
+    pins_per_cell: int = 3
+    cell_gap: int = 1             # min vertex separation between cells (0 = may abut)
     # feasibility search
     seed: int = 0
     master_seed: int = 0
     max_attempts: int = 16
     baseline_order: str = "bbox_desc"
+    router: str = "baseline"   # 'baseline' (rip-up) or 'negotiated' (PathFinder)
 
     def to_params(self) -> Dict:
         return asdict(self)
@@ -116,8 +118,9 @@ def _place_pins(die: int, n_pins: int, cfg: GenConfig, rng: random.Random,
         x1, y1 = x + w - 1, y + h - 1
         # non-overlap on this die (1-vertex separation to leave routing room)
         clash = False
+        gap = cfg.cell_gap
         for (ox0, oy0, ox1, oy1) in occupied:
-            if not (x1 < ox0 - 1 or x > ox1 + 1 or y1 < oy0 - 1 or y > oy1 + 1):
+            if not (x1 < ox0 - gap or x > ox1 + gap or y1 < oy0 - gap or y > oy1 + gap):
                 clash = True
                 break
         if clash:
@@ -259,7 +262,11 @@ def generate_feasible(cfg: GenConfig) -> GenResult:
             if grow > 6:
                 raise RuntimeError(f"{cfg.name}: could not place pins after growth")
             continue
-        sub, stats = _baseline.route(inst, order=cfg.baseline_order)
+        if cfg.router == "negotiated":
+            from .negotiated import route_negotiated
+            sub, _stats = route_negotiated(inst, order=cfg.baseline_order)
+        else:
+            sub, _stats = _baseline.route(inst, order=cfg.baseline_order)
         total_attempts += 1
         if sub is not None:
             res = check(inst, sub)

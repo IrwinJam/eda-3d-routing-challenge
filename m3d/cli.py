@@ -44,13 +44,17 @@ def _baseline_total_for(suite_dir: Optional[str], case_name: str,
 
 # --------------------------------------------------------------------------- #
 def cmd_generate(args: argparse.Namespace) -> int:
-    from .suite import build_suite, MASTER_SEED
-    os.makedirs(args.out, exist_ok=True)
-    print(f"generating 20-case suite into {args.out} "
-          f"(layers={args.layers}, master_seed={args.master_seed}) ...")
-    man = build_suite(args.out, layers=args.layers, master_seed=args.master_seed)
-    print(f"done: {len(man['cases'])} cases; manifest at "
-          f"{os.path.join(args.out, 'suite.json')}")
+    from .suite import build_suite, tier_dir, TIERS
+    tiers = list(TIERS) if args.tier == "all" else [args.tier]
+    for tier in tiers:
+        out = args.out if (args.out and args.tier != "all") else tier_dir(tier)
+        os.makedirs(out, exist_ok=True)
+        print(f"generating tier '{tier}' into {out} "
+              f"(layers={args.layers}, master_seed={args.master_seed}) ...")
+        man = build_suite(out, tier=tier, layers=args.layers,
+                          master_seed=args.master_seed)
+        print(f"done tier '{tier}': {len(man['cases'])} cases; "
+              f"manifest at {os.path.join(out, 'suite.json')}")
     return 0
 
 
@@ -163,6 +167,126 @@ def cmd_visualize(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_run_suite(args: argparse.Namespace) -> int:
+    man = _load_manifest(args.suite)
+    os.makedirs(args.out_dir, exist_ok=True)
+    runtimes: Dict[str, float] = {}
+    ok = True
+    for c in man["cases"]:
+        inst = Instance.load(os.path.join(args.suite, c["instance_file"]))
+        t0 = time.time()
+        if args.router == "negotiated":
+            from .negotiated import route_negotiated
+            sub, _ = route_negotiated(inst)
+        elif args.router == "negotiated_fast":
+            from .negotiated import route_negotiated
+            sub, _ = route_negotiated(inst, max_iters=25, pres_mult=2.3, order="id")
+        elif args.router == "negotiated2":
+            # best-of-two-orders: more effort (~2x runtime) for lower delay
+            from .negotiated import route_negotiated
+            best = None
+            for order in ("bbox_desc", "id"):
+                s, _ = route_negotiated(inst, order=order)
+                if s is None:
+                    continue
+                r = check(inst, s)
+                if r.legal and (best is None or r.total_delay < best[1]):
+                    best = (s, r.total_delay)
+            sub = best[0] if best else None
+        else:
+            sub, _ = route(inst)
+        dt = time.time() - t0
+        runtimes[inst.name] = round(dt, 3)
+        if sub is None:
+            print(f"  {inst.name}: FAILED ({args.router}) {dt:.2f}s")
+            ok = False
+            continue
+        res = check(inst, sub)
+        sub.save(os.path.join(args.out_dir, f"{inst.name}.sol.json"))
+        print(f"  {inst.name}: legal={res.legal} total={res.total_delay} "
+              f"{args.router} {dt:.2f}s")
+        ok = ok and res.legal
+    with open(os.path.join(args.out_dir, "runtime.json"), "w") as fh:
+        json.dump(runtimes, fh, indent=1)
+    print(f"wrote {len(man['cases'])} solutions + runtime.json -> {args.out_dir}")
+    return 0 if ok else 3
+
+
+def _load_runtimes(submission_dir: str) -> Dict[str, float]:
+    path = os.path.join(submission_dir, "runtime.json")
+    if os.path.exists(path):
+        try:
+            return {k: float(v) for k, v in json.load(open(path)).items()}
+        except Exception:
+            return {}
+    return {}
+
+
+def _submission_entries(root: str):
+    for name in sorted(os.listdir(root)):
+        d = os.path.join(root, name)
+        if os.path.isdir(d):
+            yield name, d
+
+
+def cmd_leaderboard(args: argparse.Namespace) -> int:
+    from .scorer import score_submission_set, rank_submissions, pareto_frontier
+    man = _load_manifest(args.suite)
+    subs = [score_submission_set(man, args.suite, d, name, _load_runtimes(d))
+            for name, d in _submission_entries(args.submissions_root)]
+    ranked = rank_submissions(subs)
+    frontier = set(pareto_frontier(subs))
+    print(f"leaderboard for suite '{man.get('tier', args.suite)}' "
+          f"({man['n_cases']} cases):")
+    print(f"  {'rank':>4}  {'name':<16} {'agg':>7}  {'legal':>7}  "
+          f"{'tot.delay':>10}  {'runtime(s)':>10}  pareto")
+    for i, s in enumerate(ranked, 1):
+        agg = f"{s.aggregate:.4f}" if s.complete else "  -   "
+        td = str(s.total_delay) if s.total_delay is not None else "-"
+        rt = f"{s.total_runtime:.2f}" if s.total_runtime is not None else "-"
+        star = "*" if s.name in frontier else ""
+        print(f"  {i:>4}  {s.name:<16} {agg:>7}  {s.n_legal:>3}/{s.n_cases:<3}  "
+              f"{td:>10}  {rt:>10}  {star}")
+    out = {
+        "format": "m3d-leaderboard-multi",
+        "suite": man.get("tier", args.suite),
+        "n_cases": man["n_cases"],
+        "pareto_frontier": sorted(frontier),
+        "ranking": [s.to_dict() for s in ranked],
+    }
+    if args.out:
+        json.dump(out, open(args.out, "w"), indent=1)
+        print(f"wrote leaderboard -> {args.out}")
+    if args.md:
+        with open(args.md, "w") as fh:
+            fh.write(f"# Leaderboard — {man.get('tier', args.suite)} "
+                     f"({man['n_cases']} cases)\n\n")
+            fh.write("| rank | submission | aggregate | legal | total delay | runtime (s) | on Pareto |\n")
+            fh.write("|---:|---|---:|:---:|---:|---:|:---:|\n")
+            for i, s in enumerate(ranked, 1):
+                agg = f"{s.aggregate:.4f}" if s.complete else "—"
+                td = s.total_delay if s.total_delay is not None else "—"
+                rt = f"{s.total_runtime:.2f}" if s.total_runtime is not None else "—"
+                fh.write(f"| {i} | {s.name} | {agg} | {s.n_legal}/{s.n_cases} | "
+                         f"{td} | {rt} | {'✓' if s.name in frontier else ''} |\n")
+        print(f"wrote markdown leaderboard -> {args.md}")
+    return 0
+
+
+def cmd_pareto(args: argparse.Namespace) -> int:
+    from .scorer import score_submission_set, pareto_frontier
+    from .viz import pareto_plot
+    man = _load_manifest(args.suite)
+    subs = [score_submission_set(man, args.suite, d, name, _load_runtimes(d))
+            for name, d in _submission_entries(args.submissions_root)]
+    frontier = pareto_frontier(subs)
+    out = args.out or "pareto.png"
+    pareto_plot(subs, out, frontier,
+                title=f"Runtime vs total delay — {man.get('tier', args.suite)}")
+    print(f"wrote Pareto plot -> {out} (frontier: {frontier})")
+    return 0
+
+
 def cmd_animate(args: argparse.Namespace) -> int:
     from . import anim
     if args.mode == "suite":
@@ -207,8 +331,9 @@ def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="m3d", description="M3D routing challenge toolkit")
     sub = p.add_subparsers(dest="cmd", required=True)
 
-    g = sub.add_parser("generate", help="build the deterministic 20-case suite")
-    g.add_argument("--out", default="benchmarks")
+    g = sub.add_parser("generate", help="build a deterministic benchmark tier")
+    g.add_argument("--tier", default="intro", choices=["intro", "hard", "scale", "all"])
+    g.add_argument("--out", default=None, help="output dir (defaults per tier)")
     g.add_argument("--layers", type=int, default=6)
     g.add_argument("--master-seed", type=int, default=20260923, dest="master_seed")
     g.set_defaults(func=cmd_generate)
@@ -251,6 +376,26 @@ def build_parser() -> argparse.ArgumentParser:
     v.add_argument("--out", default=None)
     v.add_argument("--show", action="store_true")
     v.set_defaults(func=cmd_visualize)
+
+    rs = sub.add_parser("run-suite", help="route every case with a router, timing each")
+    rs.add_argument("--suite", default="benchmarks")
+    rs.add_argument("--router", default="baseline", choices=["baseline", "negotiated", "negotiated_fast", "negotiated2"])
+    rs.add_argument("--out-dir", required=True, dest="out_dir")
+    rs.set_defaults(func=cmd_run_suite)
+
+    lb = sub.add_parser("leaderboard", help="rank multiple submissions for a suite")
+    lb.add_argument("--suite", default="benchmarks")
+    lb.add_argument("--submissions-root", required=True, dest="submissions_root",
+                    help="dir with one subdir per submission (optional runtime.json each)")
+    lb.add_argument("--out", default=None, help="leaderboard JSON")
+    lb.add_argument("--md", default=None, help="leaderboard markdown")
+    lb.set_defaults(func=cmd_leaderboard)
+
+    pr = sub.add_parser("pareto", help="Pareto plot of runtime vs total delay")
+    pr.add_argument("--suite", default="benchmarks")
+    pr.add_argument("--submissions-root", required=True, dest="submissions_root")
+    pr.add_argument("--out", default=None)
+    pr.set_defaults(func=cmd_pareto)
 
     a = sub.add_parser("animate", help="render an animated GIF")
     a.add_argument("--mode", default="layers", choices=["layers", "suite"])

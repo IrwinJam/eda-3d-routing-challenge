@@ -161,3 +161,68 @@ def visualize(inst: Instance, sub: Optional[Submission] = None,
         plt.show()
     plt.close(fig)
     return out_path
+
+
+def pareto_plot(subs, out_path: str, frontier_names=None, title: str = "Submissions: runtime vs total delay"):
+    """Scatter of total runtime (x) vs total raw delay (y) per submission, with
+    the Pareto frontier (minimize both) connected. ``subs`` is a list of
+    ``scorer.SubmissionScore``."""
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+    except Exception as exc:  # pragma: no cover
+        raise RuntimeError("matplotlib required (pip install matplotlib)") from exc
+
+    frontier_names = set(frontier_names or [])
+    fig, ax = plt.subplots(figsize=(7.6, 5.6), dpi=130)
+    comp = [s for s in subs if s.complete and s.total_runtime is not None
+            and s.total_delay is not None]
+    incomp = [s for s in subs if s not in comp]
+
+    # auto-scale y to the complete points so a small delay tradeoff stays visible
+    if comp:
+        dmin = min(s.total_delay for s in comp)
+        dmax = max(s.total_delay for s in comp)
+        span = max(dmax - dmin, 1)
+        ax.set_ylim(dmin - 0.6 * span, dmax + 0.9 * span)
+        rmin = min(s.total_runtime for s in comp)
+        rmax = max(s.total_runtime for s in comp)
+        rspan = max(rmax - rmin, 1)
+        ax.set_xlim(rmin - 0.15 * rspan, rmax + 0.35 * rspan)
+
+    fr = sorted([s for s in comp if s.name in frontier_names],
+                key=lambda s: s.total_runtime)
+    if len(fr) >= 2:
+        ax.plot([s.total_runtime for s in fr], [s.total_delay for s in fr],
+                color="#2ca02c", lw=1.6, ls="--", zorder=2, label="Pareto frontier")
+    for s in comp:
+        on = s.name in frontier_names
+        ax.scatter([s.total_runtime], [s.total_delay], s=110 if on else 70,
+                   color="#2ca02c" if on else "#1f77b4",
+                   edgecolors="black", linewidths=0.6, zorder=3)
+        ax.annotate(f"{s.name}  (agg {s.aggregate:.3f}, {s.n_legal}/{s.n_cases})",
+                    (s.total_runtime, s.total_delay),
+                    textcoords="offset points", xytext=(9, 8), fontsize=8)
+
+    # incomplete submissions listed in a corner (not on the delay axis, which
+    # would distort the scale) — they are non-competitive by the rules.
+    if incomp:
+        lines = ["incomplete (not ranked):"]
+        for s in incomp:
+            rt = f"{s.total_runtime:.0f}s" if s.total_runtime is not None else "n/a"
+            lines.append(f"  {s.name}: {s.n_legal}/{s.n_cases} legal, {rt}")
+        ax.text(0.02, 0.02, "\n".join(lines), transform=ax.transAxes, fontsize=8,
+                color="#d62728", va="bottom", ha="left",
+                bbox=dict(boxstyle="round", fc="#fff4f4", ec="#d62728", alpha=0.9))
+
+    ax.set_xlabel("total runtime over suite (s)  —  lower is better →")
+    ax.set_ylabel("total raw routing delay  —  lower is better →")
+    ax.set_title(title)
+    ax.grid(True, alpha=0.3)
+    if fr:
+        ax.legend(loc="upper center", fontsize=9)
+    fig.tight_layout()
+    fig.savefig(out_path)
+    plt.close(fig)
+    return out_path
