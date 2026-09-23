@@ -2,7 +2,7 @@ SUITE ?= benchmarks
 CASE  ?= benchmarks/case_01.json
 SUBS  ?= examples/submissions
 
-.PHONY: generate baseline baseline-suite example score-example evaluate visualize test info
+.PHONY: generate baseline baseline-suite example score-example evaluate visualize test info  gif gif-suite
 
 generate:
 	python -m m3d.cli generate --out $(SUITE)
@@ -30,3 +30,9 @@ info:
 
 test:
 	python -m unittest discover -s tests -t .
+
+gif:
+	python -m m3d.cli animate --mode layers --case benchmarks/case_12.json --sol benchmarks/reference/case_12.sol.json --out docs/layer_sweep.gif
+
+gif-suite:
+	python -m m3d.cli animate --mode suite --suite $(SUITE) --out docs/suite_sweep.gif

@@ -12,12 +12,18 @@ benchmark generator, 20 generated cases each with a **verified legal reference
 solution**, an independent legality checker and scorer, a baseline router, a
 visualization tool, an example participant router, and tests.
 
-![case_01, all layers](docs/case_01_layers.png)
+![layer sweep of a routed case](docs/layer_sweep.gif)
 
-*case_01 across its six routing layers. Edge delay is lowest on the middle
-layers (2) and highest next to the dies (6), so long connections dive to the
-middle of the stack. Cells are shaded on the die layers (z=0 bottom, z=5 top);
-pins are dots colored by die; vias are open squares; nets are colored.*
+*Sweeping the routing stack of one case (reference solution). Edge delay is
+lowest on the middle layers and highest next to the dies (see the strip at the
+bottom), so long connections dive to the cheap middle of the stack. Cells are
+shaded on the die layers; pins are dots colored by die; vias are open squares;
+nets are colored; the faint grey is the whole routing for context.*
+
+![suite sweep](docs/suite_sweep.gif)
+
+*The 20-case size ladder (each case's reference solution, flattened top-down),
+growing grid, cell, pin and net counts from case_01 to case_20.*
 
 ---
 
@@ -130,6 +136,10 @@ python -m m3d.cli score-suite --suite benchmarks --submission-dir examples/submi
 
 # visualize a case (all layers, or one layer with --layer N)
 python -m m3d.cli visualize --case benchmarks/case_01.json --sol benchmarks/reference/case_01.sol.json --out case_01.png
+
+# animate: sweep the stack of one case, or sweep the whole suite
+python -m m3d.cli animate --mode layers --case benchmarks/case_12.json --sol benchmarks/reference/case_12.sol.json --out layer_sweep.gif
+python -m m3d.cli animate --mode suite  --suite benchmarks --out suite_sweep.gif
 
 # print a case summary
 python -m m3d.cli info --case benchmarks/case_10.json

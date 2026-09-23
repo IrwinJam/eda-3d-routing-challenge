@@ -163,6 +163,27 @@ def cmd_visualize(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_animate(args: argparse.Namespace) -> int:
+    from . import anim
+    if args.mode == "suite":
+        out = args.out or "docs/suite_sweep.gif"
+        anim.suite_sweep_gif(args.suite, out, max_cases=args.max_cases)
+        print(f"wrote animation -> {out}")
+        return 0
+    inst = Instance.load(args.case)
+    if args.sol:
+        sub = Submission.load(args.sol)
+    else:
+        sub, _ = route(inst)
+        if sub is None:
+            print("could not route case for animation", file=sys.stderr)
+            return 2
+    out = args.out or (os.path.splitext(args.case)[0] + ".gif")
+    anim.layer_sweep_gif(inst, sub, out)
+    print(f"wrote animation -> {out}")
+    return 0
+
+
 def cmd_info(args: argparse.Namespace) -> int:
     inst = Instance.load(args.case)
     n_cross = 0
@@ -230,6 +251,15 @@ def build_parser() -> argparse.ArgumentParser:
     v.add_argument("--out", default=None)
     v.add_argument("--show", action="store_true")
     v.set_defaults(func=cmd_visualize)
+
+    a = sub.add_parser("animate", help="render an animated GIF")
+    a.add_argument("--mode", default="layers", choices=["layers", "suite"])
+    a.add_argument("--case", default=None, help="case JSON (layers mode)")
+    a.add_argument("--sol", default=None, help="solution (layers mode; baseline if omitted)")
+    a.add_argument("--suite", default="benchmarks", help="suite dir (suite mode)")
+    a.add_argument("--max-cases", type=int, default=None, dest="max_cases")
+    a.add_argument("--out", default=None)
+    a.set_defaults(func=cmd_animate)
 
     i = sub.add_parser("info", help="print a summary of a case")
     i.add_argument("--case", required=True)
