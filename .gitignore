@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.png
+!docs/*.png
+*.sol.json
+!benchmarks/reference/*.sol.json
+!examples/submissions/*.sol.json
+.venv/
+.pytest_cache/
+build/
+dist/
+*.egg-info/

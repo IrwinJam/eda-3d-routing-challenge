@@ -1,0 +1,190 @@
+{
+ "format": "m3d-leaderboard",
+ "complete": true,
+ "aggregate_score": 0.9436854437367053,
+ "n_cases": 20,
+ "n_legal": 20,
+ "formula": "aggregate = geomean_c(baseline_total_c / submission_total_c); higher is better; baseline scores 1.0; all cases must be legal for a complete ranked submission (else aggregate = 0.0)",
+ "cases": [
+  {
+   "case": "case_01",
+   "legal": true,
+   "total_delay": 220,
+   "baseline_delay": 240,
+   "ratio": 1.0909090909090908,
+   "runtime_s": null,
+   "reasons": []
+  },
+  {
+   "case": "case_02",
+   "legal": true,
+   "total_delay": 1160,
+   "baseline_delay": 1190,
+   "ratio": 1.0258620689655173,
+   "runtime_s": null,
+   "reasons": []
+  },
+  {
+   "case": "case_03",
+   "legal": true,
+   "total_delay": 1811,
+   "baseline_delay": 1757,
+   "ratio": 0.9701822197680839,
+   "runtime_s": null,
+   "reasons": []
+  },
+  {
+   "case": "case_04",
+   "legal": true,
+   "total_delay": 2250,
+   "baseline_delay": 2162,
+   "ratio": 0.9608888888888889,
+   "runtime_s": null,
+   "reasons": []
+  },
+  {
+   "case": "case_05",
+   "legal": true,
+   "total_delay": 4571,
+   "baseline_delay": 4197,
+   "ratio": 0.9181798293590024,
+   "runtime_s": null,
+   "reasons": []
+  },
+  {
+   "case": "case_06",
+   "legal": true,
+   "total_delay": 6343,
+   "baseline_delay": 6155,
+   "ratio": 0.970361027904777,
+   "runtime_s": null,
+   "reasons": []
+  },
+  {
+   "case": "case_07",
+   "legal": true,
+   "total_delay": 6223,
+   "baseline_delay": 5855,
+   "ratio": 0.9408645347902941,
+   "runtime_s": null,
+   "reasons": []
+  },
+  {
+   "case": "case_08",
+   "legal": true,
+   "total_delay": 8741,
+   "baseline_delay": 8549,
+   "ratio": 0.9780345498226748,
+   "runtime_s": null,
+   "reasons": []
+  },
+  {
+   "case": "case_09",
+   "legal": true,
+   "total_delay": 10058,
+   "baseline_delay": 9728,
+   "ratio": 0.9671902962815669,
+   "runtime_s": null,
+   "reasons": []
+  },
+  {
+   "case": "case_10",
+   "legal": true,
+   "total_delay": 12795,
+   "baseline_delay": 11969,
+   "ratio": 0.9354435326299335,
+   "runtime_s": null,
+   "reasons": []
+  },
+  {
+   "case": "case_11",
+   "legal": true,
+   "total_delay": 15344,
+   "baseline_delay": 14142,
+   "ratio": 0.9216631908237748,
+   "runtime_s": null,
+   "reasons": []
+  },
+  {
+   "case": "case_12",
+   "legal": true,
+   "total_delay": 19785,
+   "baseline_delay": 18509,
+   "ratio": 0.9355066969926712,
+   "runtime_s": null,
+   "reasons": []
+  },
+  {
+   "case": "case_13",
+   "legal": true,
+   "total_delay": 24543,
+   "baseline_delay": 22599,
+   "ratio": 0.9207920792079208,
+   "runtime_s": null,
+   "reasons": []
+  },
+  {
+   "case": "case_14",
+   "legal": true,
+   "total_delay": 26407,
+   "baseline_delay": 24481,
+   "ratio": 0.9270647934259856,
+   "runtime_s": null,
+   "reasons": []
+  },
+  {
+   "case": "case_15",
+   "legal": true,
+   "total_delay": 29094,
+   "baseline_delay": 27648,
+   "ratio": 0.9502990307279852,
+   "runtime_s": null,
+   "reasons": []
+  },
+  {
+   "case": "case_16",
+   "legal": true,
+   "total_delay": 43388,
+   "baseline_delay": 37902,
+   "ratio": 0.8735595095418088,
+   "runtime_s": null,
+   "reasons": []
+  },
+  {
+   "case": "case_17",
+   "legal": true,
+   "total_delay": 56362,
+   "baseline_delay": 49554,
+   "ratio": 0.879209396401831,
+   "runtime_s": null,
+   "reasons": []
+  },
+  {
+   "case": "case_18",
+   "legal": true,
+   "total_delay": 60035,
+   "baseline_delay": 53805,
+   "ratio": 0.8962272007995336,
+   "runtime_s": null,
+   "reasons": []
+  },
+  {
+   "case": "case_19",
+   "legal": true,
+   "total_delay": 50224,
+   "baseline_delay": 45488,
+   "ratio": 0.9057024530105129,
+   "runtime_s": null,
+   "reasons": []
+  },
+  {
+   "case": "case_20",
+   "legal": true,
+   "total_delay": 55568,
+   "baseline_delay": 51660,
+   "ratio": 0.9296717535272099,
+   "runtime_s": null,
+   "reasons": []
+  }
+ ]
+}

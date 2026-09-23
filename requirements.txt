@@ -1,0 +1,4 @@
+# Core toolkit (generator, checker, scorer, baseline, tests) is pure standard
+# library and needs nothing here.
+# Visualization only:
+matplotlib>=3.4
