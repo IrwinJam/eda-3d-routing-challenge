@@ -3,7 +3,7 @@
  "tier": "congested",
  "master_seed": 20260923,
  "layers": 6,
- "n_cases": 3,
+ "n_cases": 4,
  "cases": [
   {
    "name": "case_01",
@@ -52,6 +52,22 @@
    "gen_seconds": 459.63,
    "instance_file": "case_03.json",
    "reference_file": "reference/case_03.sol.json"
+  },
+  {
+   "name": "case_04",
+   "seed": 1350903584,
+   "width": 116,
+   "height": 116,
+   "layers": 6,
+   "n_cells": 675,
+   "n_pins": 994,
+   "n_nets": 302,
+   "baseline_router": "negotiated",
+   "baseline_total": 234127,
+   "gen_attempts": 1,
+   "gen_seconds": 632.37,
+   "instance_file": "case_04.json",
+   "reference_file": "reference/case_04.sol.json"
   }
  ]
 }
