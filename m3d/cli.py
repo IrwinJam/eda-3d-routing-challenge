@@ -332,7 +332,7 @@ def build_parser() -> argparse.ArgumentParser:
     sub = p.add_subparsers(dest="cmd", required=True)
 
     g = sub.add_parser("generate", help="build a deterministic benchmark tier")
-    g.add_argument("--tier", default="intro", choices=["intro", "hard", "scale", "stress", "all"])
+    g.add_argument("--tier", default="intro", choices=["intro", "hard", "scale", "stress", "congested", "all"])
     g.add_argument("--out", default=None, help="output dir (defaults per tier)")
     g.add_argument("--layers", type=int, default=6)
     g.add_argument("--master-seed", type=int, default=20260923, dest="master_seed")

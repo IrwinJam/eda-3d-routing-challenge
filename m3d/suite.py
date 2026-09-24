@@ -30,10 +30,12 @@ from .generator import GenConfig, generate_feasible
 MASTER_SEED = 20260923
 DEFAULT_LAYERS = 6          # configurable; the final layer count can change here
 
-TIERS = ("intro", "hard", "scale", "stress")
+TIERS = ("intro", "hard", "scale", "stress", "congested")
 _TIER_DIR = {"intro": "benchmarks", "hard": "benchmarks_hard",
-             "scale": "benchmarks_scale", "stress": "benchmarks_stress"}
-_TIER_SALT = {"intro": 0, "hard": 101, "scale": 202, "stress": 303}
+             "scale": "benchmarks_scale", "stress": "benchmarks_stress",
+             "congested": "benchmarks_congested"}
+_TIER_SALT = {"intro": 0, "hard": 101, "scale": 202, "stress": 303,
+              "congested": 404}
 
 
 def tier_dir(tier: str) -> str:
@@ -99,6 +101,23 @@ def suite_configs(tier: str = "intro", layers: int = DEFAULT_LAYERS,
                 frac_local=0.5, cell_min=2, cell_max=3, pins_per_cell=3, cell_gap=1,
                 seed=seed, master_seed=master_seed, max_attempts=3,
                 router="baseline"))
+    elif tier == "congested":
+        # Large AND contended: the congested counterpart of the sparse 'stress'
+        # case. Net density (~2.6*side) and locality (0.12) keep the cheap middle
+        # layers ~35% utilized at every size, so the simple rip-up baseline is
+        # hopeless and the negotiated router is stressed by both size and
+        # contention (baseline ~80 s / ~4 min / ~8 min across the three cases).
+        for side in (64, 88, 112):
+            seed = rng.randrange(1, 2 ** 31 - 1)
+            i = len(cfgs)
+            cfgs.append(GenConfig(
+                name=f"case_{i + 1:02d}", width=side, height=side, layers=layers,
+                center_delay=1, layer_slope=1, via_delay=3,
+                n_nets=round(2.6 * side), frac_cross=0.45, p_twopin=0.6,
+                max_fanout=6, frac_local=0.12, cell_min=2, cell_max=2,
+                pins_per_cell=2, cell_gap=0,
+                seed=seed, master_seed=master_seed, max_attempts=6,
+                router="negotiated"))
     else:
         raise ValueError(f"unknown tier {tier!r}; choose from {TIERS}")
     return cfgs
