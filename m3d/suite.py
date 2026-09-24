@@ -107,7 +107,7 @@ def suite_configs(tier: str = "intro", layers: int = DEFAULT_LAYERS,
         # layers ~35% utilized at every size, so the simple rip-up baseline is
         # hopeless and the negotiated router is stressed by both size and
         # contention (baseline ~80 s / ~4 min / ~8 min across the three cases).
-        for side in (64, 88, 112):
+        for side in (64, 88, 112, 160):
             seed = rng.randrange(1, 2 ** 31 - 1)
             i = len(cfgs)
             cfgs.append(GenConfig(
