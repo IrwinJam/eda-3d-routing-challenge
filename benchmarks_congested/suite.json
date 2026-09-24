@@ -1,0 +1,57 @@
+{
+ "format": "m3d-suite",
+ "tier": "congested",
+ "master_seed": 20260923,
+ "layers": 6,
+ "n_cases": 3,
+ "cases": [
+  {
+   "name": "case_01",
+   "seed": 570478951,
+   "width": 64,
+   "height": 64,
+   "layers": 6,
+   "n_cells": 353,
+   "n_pins": 531,
+   "n_nets": 166,
+   "baseline_router": "negotiated",
+   "baseline_total": 71049,
+   "gen_attempts": 1,
+   "gen_seconds": 70.15,
+   "instance_file": "case_01.json",
+   "reference_file": "reference/case_01.sol.json"
+  },
+  {
+   "name": "case_02",
+   "seed": 2132093133,
+   "width": 88,
+   "height": 88,
+   "layers": 6,
+   "n_cells": 482,
+   "n_pins": 726,
+   "n_nets": 229,
+   "baseline_router": "negotiated",
+   "baseline_total": 122534,
+   "gen_attempts": 1,
+   "gen_seconds": 200.89,
+   "instance_file": "case_02.json",
+   "reference_file": "reference/case_02.sol.json"
+  },
+  {
+   "name": "case_03",
+   "seed": 1716194395,
+   "width": 112,
+   "height": 112,
+   "layers": 6,
+   "n_cells": 641,
+   "n_pins": 950,
+   "n_nets": 291,
+   "baseline_router": "negotiated",
+   "baseline_total": 216835,
+   "gen_attempts": 1,
+   "gen_seconds": 459.63,
+   "instance_file": "case_03.json",
+   "reference_file": "reference/case_03.sol.json"
+  }
+ ]
+}
