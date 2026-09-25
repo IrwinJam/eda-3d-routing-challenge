@@ -27,9 +27,9 @@ top-down), growing grid, cell, pin and net counts from case_01 to case_20.*
 
 ## Difficulty tiers
 
-The challenge ships three tiers, from an easy on-ramp to genuinely hard. Each is
-its own directory with its own manifest; each case is normalized against its own
-tier's baseline.
+The challenge ships several tiers, from an easy on-ramp to genuinely hard, plus a
+tier built from **real open-source circuits**. Each is its own directory with its
+own manifest; each case is normalized against its own tier's baseline.
 
 | Tier | Dir | Cases | Largest case | Baseline (to beat) | What makes it hard |
 |---|---|---|---|---|---|
@@ -38,15 +38,46 @@ tier's baseline.
 | **scale** | `benchmarks_scale/` | 8 | 156×156×6, 265 nets, 766 pins | simple router | **Large.** Big enough that **runtime is a first-class axis** (the baseline itself takes ~10–70 s/case), which is what the runtime-vs-delay Pareto below measures. |
 | **stress** | `benchmarks_stress/` | 1 | 530×530×6, 901 nets, 2,612 pins | simple router | **~30-minute baseline (sparse).** One giant sparse case for stress-testing router runtime and scaling; the reference (simple) baseline routes it in ~33 min. Baseline route time fits `≈ 7e-6 · nets · side²`, so you can dial any target wall time in `m3d/suite.py`. |
 | **congested** | `benchmarks_congested/` | 4 | 116×116×6, ~302 nets, ~950 pins | negotiated router | **Large + contended stress.** The congested counterpart of `stress`: net density and locality hold the cheap middle layers at ~35% utilization at every size, so the simple baseline is hopeless and even the negotiated router ramps ~80 s → ~9 min across the four cases (64/88/112/116). |
+| **designs** | `benchmarks_designs/` | 3 | 105×105×6, 344 nets, 888 pins | negotiated router | **Real open-source circuits.** Instances built from real gate-level netlists — the MIT-licensed [EPFL combinational benchmark suite](https://github.com/lsils/benchmarks). Every gate, input and output becomes a cell and every signal a net, so fanout and connectivity are those of a real design; cells are placed by connectivity clustering (reverse Cuthill-McKee) and folded across the two dies. The negotiated router certifies each reference. Bring your own with `m3d.cli import-design`. |
 
 Is the intro tier "too easy / conventional"? Yes, deliberately — it is the
 on-ramp. The **hard** tier is where the monolithic-3D structure bites: the
 delay-graded layer stack is only interesting when the cheap layers are scarce and
 contended, and there the problem stops being a clean maze and becomes a real
 congestion-plus-delay optimization that a naive router cannot even legalize. The
-**scale** tier adds the runtime dimension. Everything is parametric
-(`m3d/suite.py`, `m3d/generator.py::GenConfig`), so you can push grids, nets,
-fanout, contention, and layer count further.
+**scale** tier adds the runtime dimension. The **designs** tier grounds all of
+this in real silicon: the same model, checker and scorer applied to actual
+open-source netlists, where the fanout and connectivity are not synthetic.
+Everything is parametric (`m3d/suite.py`, `m3d/generator.py::GenConfig`,
+`m3d/designs.py::DesignConfig`), so you can push grids, nets, fanout, contention,
+layer count — and add more real designs — further.
+
+### Real designs (the `designs` tier)
+
+The `designs` tier is built from **real gate-level netlists**, not the random
+generator. The sources are vendored under `designs/blif/` from the MIT-licensed
+[EPFL combinational benchmark suite](https://github.com/lsils/benchmarks) (see
+`designs/PROVENANCE.md`). The mapping is direct:
+
+* every logic gate, primary input and primary output becomes a **cell** (footprint
+  sized to its pin count);
+* every **signal** with a driver and ≥1 sink becomes a **net** — the driving
+  terminal is the driver pin, the reading terminals are the sinks — so the fanout
+  and connectivity are exactly the design's;
+* cells are ordered by **reverse Cuthill-McKee** (connectivity clustering) and
+  spread on a lattice with a routing channel around each, then split across the two
+  dies at a low-connectivity cut, so signals crossing the fold use vias;
+* the negotiated router certifies a legal reference, widening the channel until it
+  succeeds — the same verified-feasible guarantee as every other tier.
+
+Only the connectivity is used; the logic (the BLIF truth tables) is irrelevant to
+routing and is ignored. Build the tier with `make generate-designs` (resumable —
+re-run to finish if interrupted), or turn **any** BLIF into an instance:
+
+```
+python -m m3d.cli import-design --blif designs/blif/cavlc.blif --name cavlc \
+    --out cavlc.json --reference cavlc.sol.json
+```
 
 ---
 
@@ -127,16 +158,21 @@ m3d/                 the toolkit (pure stdlib)
   scorer.py          per-case scoring + normalized leaderboard
   baseline.py        baseline router (Dijkstra trees + rip-up-and-reroute)
   negotiated.py      negotiated-congestion router (PathFinder-style; hard tier)
-  suite.py           the released tiers (intro / hard / scale) + size ladders
+  designs.py         BLIF netlist -> routing instance (the 'designs' tier)
+  suite.py           the generated tiers (intro/hard/scale/stress/congested)
   scorer.py          per-case scoring, leaderboard, Pareto frontier
   viz.py             matplotlib visualization + Pareto plot
   anim.py            animated GIF renderers
   cli.py             command-line entry point
+designs/             vendored open-source netlists (blif/) + license + provenance
 benchmarks/          intro tier: 20 cases + suite.json + reference/
 benchmarks_hard/     hard (contended) tier: 9 cases + suite.json + reference/
 benchmarks_scale/    scale (large) tier: 8 cases + suite.json + reference/
+benchmarks_stress/   stress tier: 1 giant sparse case + suite.json + reference/
+benchmarks_congested/  congested tier: 4 large contended cases + reference/
+benchmarks_designs/  designs tier: 3 real EPFL circuits + suite.json + reference/
 examples/            example participant router; example + leaderboard submissions
-tests/               unit + end-to-end tests (33)
+tests/               unit + end-to-end tests (40)
 docs/                images, the Pareto plot, and the format reference (FORMATS.md)
 ```
 

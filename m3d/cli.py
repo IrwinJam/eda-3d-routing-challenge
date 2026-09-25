@@ -45,16 +45,48 @@ def _baseline_total_for(suite_dir: Optional[str], case_name: str,
 # --------------------------------------------------------------------------- #
 def cmd_generate(args: argparse.Namespace) -> int:
     from .suite import build_suite, tier_dir, TIERS
-    tiers = list(TIERS) if args.tier == "all" else [args.tier]
+    from .designs import build_design_suite, DESIGN_DIR
+    all_tiers = list(TIERS) + ["designs"]
+    tiers = all_tiers if args.tier == "all" else [args.tier]
     for tier in tiers:
-        out = args.out if (args.out and args.tier != "all") else tier_dir(tier)
-        os.makedirs(out, exist_ok=True)
-        print(f"generating tier '{tier}' into {out} "
-              f"(layers={args.layers}, master_seed={args.master_seed}) ...")
-        man = build_suite(out, tier=tier, layers=args.layers,
-                          master_seed=args.master_seed)
+        if tier == "designs":
+            out = args.out if (args.out and args.tier != "all") else DESIGN_DIR
+            os.makedirs(out, exist_ok=True)
+            print(f"generating tier 'designs' into {out} "
+                  f"(real EPFL netlists, layers={args.layers}) ...")
+            man = build_design_suite(out, layers=args.layers,
+                                     master_seed=args.master_seed)
+        else:
+            out = args.out if (args.out and args.tier != "all") else tier_dir(tier)
+            os.makedirs(out, exist_ok=True)
+            print(f"generating tier '{tier}' into {out} "
+                  f"(layers={args.layers}, master_seed={args.master_seed}) ...")
+            man = build_suite(out, tier=tier, layers=args.layers,
+                              master_seed=args.master_seed)
         print(f"done tier '{tier}': {len(man['cases'])} cases; "
               f"manifest at {os.path.join(out, 'suite.json')}")
+    return 0
+
+
+def cmd_import_design(args: argparse.Namespace) -> int:
+    from .designs import load_netlist, generate_design_feasible, DesignConfig
+    from .checker import check
+    nl = load_netlist(args.blif)
+    cfg = DesignConfig(name=args.name, layers=args.layers, channel=args.channel,
+                       router=args.router)
+    print(f"importing {args.blif} as '{args.name}' "
+          f"(router={args.router}, channel={args.channel}) ...")
+    res = generate_design_feasible(args.name, nl, cfg)
+    inst = res.instance
+    chk = check(inst, res.reference)
+    inst.save(args.out)
+    print(f"wrote {args.out}: {inst.width}x{inst.height}x{inst.layers}, "
+          f"{len(inst.cells)} cells, {len(inst.pins)} pins, {len(inst.nets)} nets; "
+          f"baseline={res.baseline_total}, legal={chk.legal}, attempts={res.attempts}")
+    if args.reference:
+        os.makedirs(os.path.dirname(os.path.abspath(args.reference)), exist_ok=True)
+        res.reference.save(args.reference)
+        print(f"wrote reference solution {args.reference}")
     return 0
 
 
@@ -332,11 +364,25 @@ def build_parser() -> argparse.ArgumentParser:
     sub = p.add_subparsers(dest="cmd", required=True)
 
     g = sub.add_parser("generate", help="build a deterministic benchmark tier")
-    g.add_argument("--tier", default="intro", choices=["intro", "hard", "scale", "stress", "congested", "all"])
+    g.add_argument("--tier", default="intro", choices=["intro", "hard", "scale", "stress", "congested", "designs", "all"])
     g.add_argument("--out", default=None, help="output dir (defaults per tier)")
     g.add_argument("--layers", type=int, default=6)
     g.add_argument("--master-seed", type=int, default=20260923, dest="master_seed")
     g.set_defaults(func=cmd_generate)
+
+    idn = sub.add_parser("import-design",
+                         help="build a routing instance from a BLIF netlist")
+    idn.add_argument("--blif", required=True, help="input .blif netlist")
+    idn.add_argument("--name", required=True, help="instance name")
+    idn.add_argument("--out", required=True, help="output instance JSON")
+    idn.add_argument("--reference", default=None,
+                     help="also write the certified reference solution here")
+    idn.add_argument("--channel", type=int, default=5,
+                     help="routing channel width (roominess); grows on failure")
+    idn.add_argument("--layers", type=int, default=6)
+    idn.add_argument("--router", default="negotiated",
+                     choices=["baseline", "negotiated"])
+    idn.set_defaults(func=cmd_import_design)
 
     b = sub.add_parser("baseline", help="run the baseline router on one case")
     b.add_argument("--case", required=True)

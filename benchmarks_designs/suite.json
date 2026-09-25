@@ -1,0 +1,63 @@
+{
+ "format": "m3d-suite",
+ "tier": "designs",
+ "master_seed": 20260923,
+ "layers": 6,
+ "n_cases": 3,
+ "cases": [
+  {
+   "name": "ctrl",
+   "seed": 20260923,
+   "width": 77,
+   "height": 77,
+   "layers": 6,
+   "n_cells": 208,
+   "n_pins": 556,
+   "n_nets": 182,
+   "baseline_router": "negotiated",
+   "baseline_total": 73148,
+   "gen_attempts": 1,
+   "gen_seconds": 112.65,
+   "instance_file": "ctrl.json",
+   "reference_file": "reference/ctrl.sol.json",
+   "source": "blif",
+   "design": "ctrl.blif"
+  },
+  {
+   "name": "int2float",
+   "seed": 20260924,
+   "width": 84,
+   "height": 84,
+   "layers": 6,
+   "n_cells": 278,
+   "n_pins": 798,
+   "n_nets": 271,
+   "baseline_router": "negotiated",
+   "baseline_total": 152284,
+   "gen_attempts": 1,
+   "gen_seconds": 208.45,
+   "instance_file": "int2float.json",
+   "reference_file": "reference/int2float.sol.json",
+   "source": "blif",
+   "design": "int2float.blif"
+  },
+  {
+   "name": "router",
+   "seed": 20260925,
+   "width": 105,
+   "height": 105,
+   "layers": 6,
+   "n_cells": 374,
+   "n_pins": 888,
+   "n_nets": 344,
+   "baseline_router": "negotiated",
+   "baseline_total": 82491,
+   "gen_attempts": 1,
+   "gen_seconds": 205.19,
+   "instance_file": "router.json",
+   "reference_file": "reference/router.sol.json",
+   "source": "blif",
+   "design": "router.blif"
+  }
+ ]
+}

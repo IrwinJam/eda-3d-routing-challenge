@@ -8,6 +8,7 @@ __pycache__/
 !benchmarks_scale/reference/*.sol.json
 !benchmarks_stress/reference/*.sol.json
 !benchmarks_congested/reference/*.sol.json
+!benchmarks_designs/reference/*.sol.json
 !examples/submissions/*.sol.json
 !examples/leaderboard_hard/*/*.sol.json
 .venv/
