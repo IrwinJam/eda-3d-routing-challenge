@@ -397,6 +397,20 @@ preserves the delay objective on sparse instances. Both routers are deterministi
   are configurable (`m3d/generator.py::GenConfig`, `m3d/suite.py`). The routing
   layer count and benchmark sizes are intentionally easy to change.
 
+## Contributing and issues
+
+Found a bug, a broken case, unclear docs, or a rough edge? **Please fix it and
+open a pull request.** Improvements to the toolkit, generator, docs, tests, or
+tooling are all welcome — no need to ask first for small fixes.
+
+* **Toolkit / bug-fix PRs** may touch any file; please keep the tests green
+  (`make test`) and add a test when you fix a bug.
+* **Leaderboard-submission PRs** only add your results under `submissions/` — see
+  [`CONTRIBUTING.md`](CONTRIBUTING.md). CI keeps those two kinds of PR separate.
+
+If you would rather just report something, open a GitHub issue describing the
+problem and, if you can, the case or command that triggers it.
+
 ## License
 
 MIT — see `LICENSE`.
