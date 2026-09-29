@@ -2,7 +2,7 @@ SUITE ?= benchmarks
 CASE  ?= benchmarks/case_01.json
 SUBS  ?= examples/submissions
 
-.PHONY: generate baseline baseline-suite example score-example evaluate visualize test info gif gif-suite generate-all generate-stress generate-congested generate-designs leaderboard pareto
+.PHONY: generate baseline baseline-suite example score-example evaluate visualize test info gif gif-suite generate-all generate-stress generate-congested generate-designs leaderboard verify-submissions pareto
 
 generate:
 	python -m m3d.cli generate --out $(SUITE)
@@ -51,8 +51,12 @@ generate-congested:   ## ~15 min: 4 large contended cases (negotiated baseline)
 generate-designs:   ## ~15 min: 4 real EPFL circuits (resumable; re-run to finish)
 	python -m m3d.cli generate --tier designs
 
-leaderboard:
-	python -m m3d.cli leaderboard --suite benchmarks_hard --submissions-root examples/leaderboard_hard --md examples/leaderboard_hard.md
+leaderboard:   ## rebuild LEADERBOARD.md from submissions/<tier>/*
+	python -m m3d.cli leaderboard-all
 
-pareto:
-	python -m m3d.cli pareto --suite benchmarks_hard --submissions-root examples/leaderboard_hard --out docs/pareto.png
+verify-submissions:   ## re-check every submission with the independent checker (what CI runs)
+	python scripts/verify_submissions.py
+	python -m m3d.cli leaderboard-all --check
+
+pareto:   ## runtime-vs-delay Pareto plot for the hard tier
+	python -m m3d.cli pareto --suite benchmarks_hard --submissions-root submissions/hard --out docs/pareto.png

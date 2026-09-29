@@ -171,8 +171,13 @@ benchmarks_scale/    scale (large) tier: 8 cases + suite.json + reference/
 benchmarks_stress/   stress tier: 1 giant sparse case + suite.json + reference/
 benchmarks_congested/  congested tier: 4 large contended cases + reference/
 benchmarks_designs/  designs tier: 3 real EPFL circuits + suite.json + reference/
-examples/            example participant router; example + leaderboard submissions
-tests/               unit + end-to-end tests (40)
+submissions/         PR-based leaderboard entries: submissions/<tier>/<name>/
+LEADERBOARD.md       generated leaderboard (python -m m3d.cli leaderboard-all)
+CONTRIBUTING.md      how to submit results by pull request
+scripts/             verify_submissions.py (the check CI runs on every PR)
+.github/workflows/   CI: verify submissions + keep LEADERBOARD.md current
+examples/            example participant router + example submissions
+tests/               unit + end-to-end tests (43)
 docs/                images, the Pareto plot, and the format reference (FORMATS.md)
 ```
 
@@ -228,10 +233,14 @@ A `Makefile` wraps the common commands: `make generate`, `make baseline`,
 4. Score locally:
    `python -m m3d.cli score-suite --suite benchmarks --submission-dir <your_dir>`.
 
-A **complete ranked submission must be legal on all 20 cases.** See
+A **complete ranked submission must be legal on every case in the tier.** See
 `examples/example_submission.py` for a minimal, self-contained router you can
 copy and replace with your own algorithm — it demonstrates loading, routing on
 the shared grid, self-checking, and writing a submission.
+
+5. To appear on the **live leaderboard**, open a pull request adding your results
+   under `submissions/<tier>/<name>/` — see [`CONTRIBUTING.md`](CONTRIBUTING.md)
+   and section 5b below.
 
 ### File formats (summary; full spec in `docs/FORMATS.md`)
 
@@ -298,15 +307,36 @@ The ranked leaderboard sorts complete submissions by aggregate score (then by
 total delay); a submission that is not legal on every case is listed but not
 ranked. The Pareto plot shows one point per submission — **total runtime vs total
 raw routing delay** — and highlights the frontier (you cannot lower delay without
-spending more time). A worked example over the hard tier lives in
-`examples/leaderboard_hard/` (three negotiated variants); its board is
-`examples/leaderboard_hard.md` and the plot is below.
+spending more time).
 
 ![runtime vs total delay Pareto](docs/pareto.png)
 
 *Hard tier: `negotiated` (faster, higher delay) and `negotiated_x2` (best-of-two
 orders — ~2× the runtime for ~1.5% lower delay) are both Pareto-optimal;
 `negotiated_fast` is faster still but illegal on one case, so it is not ranked.*
+
+### The live leaderboard (submit by PR)
+
+The project leaderboard lives at [`LEADERBOARD.md`](LEADERBOARD.md) and is built
+from real, checker-verified entries under `submissions/<tier>/<name>/`. **You get
+on it by opening a pull request** that adds your results — see
+[`CONTRIBUTING.md`](CONTRIBUTING.md) for the step-by-step.
+
+Scores are always recomputed from the submitted **route files** by the independent
+checker, so the board cannot be gamed by editing numbers — you rank higher only by
+submitting better *legal* routes. CI on every PR re-checks each solution, confirms
+`LEADERBOARD.md` is current (`leaderboard-all --check`), and blocks submission PRs
+that touch anything outside `submissions/` and `LEADERBOARD.md`.
+
+```bash
+# self-check your submission, then regenerate the board before you commit
+python -m m3d.cli score-suite --suite benchmarks_hard --submission-dir submissions/hard/<name>
+python -m m3d.cli leaderboard-all          # writes LEADERBOARD.md
+make verify-submissions                    # exactly what CI runs
+```
+
+The seed entries under `submissions/hard/` are the three negotiated variants shown
+in the Pareto plot above.
 
 ## 6. The baseline router
 

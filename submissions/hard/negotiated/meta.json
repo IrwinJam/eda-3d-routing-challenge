@@ -1,0 +1,7 @@
+{
+ "author": "Anthropic (reference)",
+ "url": "https://github.com/partcleda/eda-3d-routing-challenge",
+ "date": "2026-09-25",
+ "method": "Negotiated-congestion (PathFinder-style) router, default schedule",
+ "iters": 50
+}
