@@ -95,9 +95,9 @@ def layer_sweep_gif(inst: Instance, sub: Submission, out_path: str,
     order = list(range(inst.layers)) + list(range(inst.layers - 2, 0, -1))
     frames, durations = [], []
     for z in order:
-        fig = plt.figure(figsize=(6.0, 6.4), dpi=112)
-        ax = fig.add_axes([0.06, 0.15, 0.9, 0.77])
-        strip = fig.add_axes([0.12, 0.045, 0.76, 0.06])
+        fig = plt.figure(figsize=(6.0, 6.6), dpi=112)
+        ax = fig.add_axes([0.06, 0.20, 0.9, 0.72])
+        strip = fig.add_axes([0.12, 0.105, 0.76, 0.055])
         ax.set_xlim(-1, inst.width); ax.set_ylim(-1, inst.height)
         ax.set_aspect("equal"); ax.set_xticks([]); ax.set_yticks([])
         ax.add_patch(Rectangle((-0.5, -0.5), inst.width, inst.height, fill=False,
