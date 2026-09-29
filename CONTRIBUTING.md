@@ -4,6 +4,13 @@ The leaderboard is **PR-based**: you open a pull request that adds your routing
 results under `submissions/`, and CI verifies them. Everything runs on the Python
 standard library — no install needed.
 
+**Use any language and any hardware.** A submission is just JSON route files, so
+your router can be written in anything and run on a CPU, a GPU, a cluster, or a
+Mac laptop — the toolkit only reads and scores your output. The checker/scorer are
+pure Python 3.9+ (macOS, Linux, Windows), and scoring is deterministic across
+platforms (exact integer arithmetic on the committed benchmarks), so your local
+score matches CI's.
+
 ## 1. Pick a tier and produce routes
 
 Choose a tier (`intro`, `hard`, `scale`, `stress`, `congested`, or `designs`) and

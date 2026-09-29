@@ -6,25 +6,20 @@ on:
     branches: [main]
 
 jobs:
-  verify:
+  # PR hygiene: a submission PR may only touch submissions/ and LEADERBOARD.md.
+  guard:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
       - name: Guard paths on submission PRs
-        if: github.event_name == 'pull_request'
         run: |
           git fetch origin "${{ github.base_ref }}" --depth=1
           base="origin/${{ github.base_ref }}"
           changed="$(git diff --name-only "$base"...HEAD)"
           echo "Changed files:"; echo "$changed"
-          # Only guard PRs that add/modify submissions/. Pure toolkit PRs are fine.
           if echo "$changed" | grep -q '^submissions/'; then
             bad="$(echo "$changed" | grep -vE '^(submissions/|LEADERBOARD\.md$)' || true)"
             if [ -n "$bad" ]; then
@@ -34,11 +29,23 @@ jobs:
             fi
           fi
 
-      - name: Run tests
+  # Toolkit + submissions are pure standard library, so they must pass on Linux
+  # and macOS across supported Python versions. No third-party install, no GPU.
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.9", "3.12"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run tests (stdlib only)
         run: python -m unittest discover -s tests -q
-
       - name: Verify all submissions are legal
         run: python scripts/verify_submissions.py
-
       - name: Check LEADERBOARD.md is current
         run: python -m m3d.cli leaderboard-all --check

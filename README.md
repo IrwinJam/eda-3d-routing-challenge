@@ -185,8 +185,17 @@ docs/                images, the Pareto plot, and the format reference (FORMATS.
 
 ## 3. Quick start
 
-Requires Python 3.8+. For visualization: `pip install -r requirements.txt`
-(matplotlib). Run all commands from the repository root.
+Requires **Python 3.9+ and nothing else** — the toolkit is pure standard library,
+so it runs on macOS, Linux and Windows with no install. CI tests macOS and Linux
+on Python 3.9 and 3.12. Only the optional visualization needs matplotlib
+(`pip install -r requirements.txt`). Run all commands from the repository root.
+
+**Any language, any hardware.** A submission is just JSON route files (see
+[`docs/FORMATS.md`](docs/FORMATS.md)), so you can write your router in any
+language and run it on anything — CPU, GPU, a cluster, a Mac laptop. The toolkit
+only *reads and scores* your output; it never runs your solver. Scoring is
+deterministic across platforms: it recomputes delay with exact integer arithmetic
+on the committed benchmark instances, so your local score matches CI's exactly.
 
 ```bash
 # regenerate a tier deterministically (intro -> benchmarks/, hard -> benchmarks_hard/,
@@ -364,6 +373,13 @@ preserves the delay objective on sparse instances. Both routers are deterministi
   reproducible per-case seed schedule (`m3d/suite.py`). Generation uses Python's
   `random.Random` (Mersenne Twister), stable across CPython versions for a given
   seed and call sequence. Delays are integers, so scoring is exact.
+* **Cross-platform and hardware-agnostic.** The toolkit is pure standard library
+  (Python 3.9+); CI runs the tests and submission checks on macOS and Linux across
+  Python 3.9 and 3.12. Because scoring recomputes integer delay on the *committed*
+  benchmark instances, a submission scores identically on every OS and on any
+  hardware — so participants are free to use GPUs, other languages, or a cluster
+  to produce their route files. (Regenerate benchmarks only if you intend to fork
+  the suite; the released cases and baselines are what everyone is scored against.)
 * **Verified feasibility.** Every released instance is generated and then routed
   by the baseline and validated by the independent checker; candidates without a
   checker-verified legal solution are discarded and regenerated. The verified
