@@ -1,0 +1,53 @@
+{
+  "author": "jay-tau",
+  "url": "https://github.com/jay-tau",
+  "method": "Exact A* and bounded group refinement of credited pathfinder_lns public warm starts; best legal route per case.",
+  "date": "2026-09-30",
+  "snapshot_at_utc": "2026-09-30T15:28:35.117491+00:00",
+  "warm_start": {
+    "author": "Taz33m",
+    "submission": "pathfinder_lns",
+    "pull_request": "https://github.com/partcleda/eda-3d-routing-challenge/pull/3",
+    "commit": "a5ef5e2406682473b99c6496a87a6279b64db9ba"
+  },
+  "selection": "Lowest checker-recomputed delay; original route retained on ties.",
+  "runtime": "Omitted: incremental trial times do not include generation of the public warm starts.",
+  "cases": [
+    {
+      "case": "case_01",
+      "warm_start_delay": 54193,
+      "total_delay": 54191,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "c653586d25a4692a61af27175bd07c7c4316d907378e6e5caca737f4ca47e113",
+      "route_sha256": "8b52d01e6026eb977f9112cdefc5509092918f4e8c9cd94e1a6fae7b3ccd8b16"
+    },
+    {
+      "case": "case_02",
+      "warm_start_delay": 95910,
+      "total_delay": 95892,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "90dc19529949cc96c9a5e7b0fe24538dec702d97bbdd1e910d3711b8731047a2",
+      "route_sha256": "841caa7517dbd795af8c377dbaf8feee51f671cf284ab70a041e9e123a569d0b"
+    },
+    {
+      "case": "case_03",
+      "warm_start_delay": 165309,
+      "total_delay": 165191,
+      "strict_improvement": true,
+      "method": "exact and group refinement with bounded annealing",
+      "warm_start_sha256": "27f8ad47ea4bf5e727c4207bcddd4dce52b1d9d0994c7bd1a3eebb6e034251e3",
+      "route_sha256": "89d2cbfc99df1b6e28f7253564789d32f75a628d7a075ed8ae1436743dc7bdb8"
+    },
+    {
+      "case": "case_04",
+      "warm_start_delay": 178091,
+      "total_delay": 177953,
+      "strict_improvement": true,
+      "method": "exact and group refinement with bounded annealing",
+      "warm_start_sha256": "74398d41e9b3e16f227073ce2b1a0b04ac5f66fbd4865c324d645bd0ae716a86",
+      "route_sha256": "01b7ae77a04c87ac016f493680abc4aa179dd1666d1cb69f60b38a88151efd63"
+    }
+  ]
+}
