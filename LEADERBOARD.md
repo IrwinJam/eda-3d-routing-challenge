@@ -10,7 +10,8 @@ do not edit it by hand.
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
 |---:|---|---|---:|:---:|---:|---:|:---:|
-| 1 | negotiated_x2 | Anthropic (reference) | 1.0168 | 9/9 | 198763 | 177.01 | ✓ |
-| 2 | negotiated | Anthropic (reference) | 1.0000 | 9/9 | 201863 | 85.20 | ✓ |
-| 3 | negotiated_fast | Anthropic (reference) | — | 8/9 | — | 61.74 |  |
+| 1 | erikqu_root_aware_portfolio | erikqu | 1.0563 | 9/9 | 191341 | — |  |
+| 2 | negotiated_x2 | Anthropic (reference) | 1.0168 | 9/9 | 198763 | 177.01 | ✓ |
+| 3 | negotiated | Anthropic (reference) | 1.0000 | 9/9 | 201863 | 85.20 | ✓ |
+| 4 | negotiated_fast | Anthropic (reference) | — | 8/9 | — | 61.74 |  |
 

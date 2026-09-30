@@ -1,0 +1,66 @@
+[
+  {
+    "case": "case_01",
+    "total_delay": 11154,
+    "candidate": "root_id",
+    "route_sha256": "4e4b295cfd477424880f6b31ee846267d3b75f0295302aed519d7fcf7168eadc",
+    "search_policy": "fixed_top2"
+  },
+  {
+    "case": "case_02",
+    "total_delay": 18760,
+    "candidate": "published negotiated_x2",
+    "route_sha256": "7e56f35212304734a730d255eea46b82073c1127f2614b723b25e49daa6e20a8",
+    "credit": "Anthropic (reference), Partcl EDA routing challenge",
+    "source": "submissions/hard/negotiated_x2/case_02.sol.json"
+  },
+  {
+    "case": "case_03",
+    "total_delay": 14164,
+    "candidate": "root_id",
+    "route_sha256": "39b57cf58dbfd4543a80be1bb2f90dfb182d67cb98c38c945cee3ecae366e644",
+    "search_policy": "fixed_top2"
+  },
+  {
+    "case": "case_04",
+    "total_delay": 16165,
+    "candidate": "root_access",
+    "route_sha256": "ae01a94c25d65c2c4e3432b1d12613c5aa3d9bdcb10c2773b39366ca9c6e36f6",
+    "search_policy": "xgb_top1"
+  },
+  {
+    "case": "case_05",
+    "total_delay": 19761,
+    "candidate": "root_id",
+    "route_sha256": "33b428b6e80db0a3543c181baf9d8c1115b1186503e14da78cf5683847c95258",
+    "search_policy": "fixed_top2"
+  },
+  {
+    "case": "case_06",
+    "total_delay": 26160,
+    "candidate": "root_gentle",
+    "route_sha256": "de924b40c648c7c4c9331f2dab87869b28f8f0fb6f9776f960e078fcb8917321",
+    "search_policy": "xgb_top1"
+  },
+  {
+    "case": "case_07",
+    "total_delay": 29021,
+    "candidate": "root_standard",
+    "route_sha256": "262cb384c8ef3e5f1188c471006dd501a994174fb3962cb150c829a1a525eb39",
+    "search_policy": "xgb_top1"
+  },
+  {
+    "case": "case_08",
+    "total_delay": 30000,
+    "candidate": "root_low_present",
+    "route_sha256": "bdd46f9829480be15b741e37495e29dcffe6e1e2b38fe56473843436d4260455",
+    "search_policy": "fixed_top1"
+  },
+  {
+    "case": "case_09",
+    "total_delay": 26156,
+    "candidate": "root_access",
+    "route_sha256": "d8f26db47c29c0c536110ac7a636c0a46749f6b54b140ec5f925023c7e8b0501",
+    "search_policy": "xgb_top1"
+  }
+]
