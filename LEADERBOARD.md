@@ -16,7 +16,7 @@ do not edit it by hand.
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
 |---:|---|---|---:|:---:|---:|---:|:---:|
-| 1 | pathfinder_lns | Tazeem Mahashin | 1.3667 | 9/9 | 147383 | — |  |
+| 1 | pathfinder_lns | Tazeem Mahashin | 1.3734 | 9/9 | 146631 | — |  |
 | 2 | negotiated_x2 | Anthropic (reference) | 1.0168 | 9/9 | 198763 | 177.01 | ✓ |
 | 3 | negotiated | Anthropic (reference) | 1.0000 | 9/9 | 201863 | 85.20 | ✓ |
 | 4 | negotiated_fast | Anthropic (reference) | — | 8/9 | — | 61.74 |  |
