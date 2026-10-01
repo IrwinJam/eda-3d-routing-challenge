@@ -186,7 +186,7 @@ class Instance:
 
     @staticmethod
     def load(path: str) -> "Instance":
-        with open(path) as fh:
+        with open(path, encoding="utf-8-sig") as fh:
             return Instance.from_dict(json.load(fh))
 
 
@@ -196,6 +196,21 @@ class Instance:
 def canon_edge(u: Vertex, v: Vertex) -> Edge:
     """Return an edge as an ordered pair (smaller vertex first) for dedup/hashing."""
     return (u, v) if tuple(u) <= tuple(v) else (v, u)
+
+
+class SubmissionFormatError(ValueError):
+    """A submission file is not a well-formed m3d-submission document."""
+
+
+def _vertex(v, where: str) -> Vertex:
+    # coordinates must be JSON integers: no floats (which int() would silently
+    # truncate, e.g. -0.9 -> 0), no booleans, no numeric strings
+    if not isinstance(v, (list, tuple)) or len(v) != 3:
+        raise SubmissionFormatError(f"{where}: a vertex must be [x, y, z], got {v!r}")
+    for c in v:
+        if type(c) is not int:
+            raise SubmissionFormatError(f"{where}: coordinates must be integers, got {c!r}")
+    return tuple(v)
 
 
 @dataclass
@@ -222,15 +237,23 @@ class Submission:
 
     @staticmethod
     def from_dict(d: Dict) -> "Submission":
-        if d.get("format") != SUBMISSION_FORMAT:
-            raise ValueError(f"not an {SUBMISSION_FORMAT} document")
+        if not isinstance(d, dict) or d.get("format") != SUBMISSION_FORMAT:
+            raise SubmissionFormatError(f"not an {SUBMISSION_FORMAT} document")
+        if not isinstance(d.get("routes"), list):
+            raise SubmissionFormatError("'routes' must be a list")
         routes = []
-        for r in d["routes"]:
+        for i, r in enumerate(d["routes"]):
+            if (not isinstance(r, dict) or type(r.get("net")) is not int
+                    or not isinstance(r.get("edges"), list)):
+                raise SubmissionFormatError(
+                    f"routes[{i}]: expected {{\"net\": <int>, \"edges\": [...]}}")
             edges = []
-            for e in r["edges"]:
-                a, b = e
-                edges.append((tuple(int(c) for c in a), tuple(int(c) for c in b)))
-            routes.append(NetRoute(net=int(r["net"]), edges=edges))
+            for j, e in enumerate(r["edges"]):
+                where = f"routes[{i}].edges[{j}]"
+                if not isinstance(e, (list, tuple)) or len(e) != 2:
+                    raise SubmissionFormatError(f"{where}: an edge must be a pair of vertices")
+                edges.append((_vertex(e[0], where), _vertex(e[1], where)))
+            routes.append(NetRoute(net=r["net"], edges=edges))
         return Submission(instance=d.get("instance", ""), routes=routes)
 
     def save(self, path: str) -> None:
@@ -239,5 +262,6 @@ class Submission:
 
     @staticmethod
     def load(path: str) -> "Submission":
-        with open(path) as fh:
+        # utf-8-sig: accept files written with a byte-order mark (common on Windows)
+        with open(path, encoding="utf-8-sig") as fh:
             return Submission.from_dict(json.load(fh))
