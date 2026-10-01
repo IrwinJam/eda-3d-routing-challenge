@@ -2,5 +2,5 @@
  "author": "reubalink",
  "url": "https://github.com/partcleda/eda-3d-routing-challenge",
  "date": "2026-10-01",
- "method": "reubalink: shortest-path-tree large-neighborhood search from the 1.1503 routes until each hard case plateaued"
+ "method": "reubalink: conflict-based pair search from the 1.1783 shortest-path-tree routes, 8 minutes per hard case"
 }
