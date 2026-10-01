@@ -10,13 +10,13 @@ do not edit it by hand.
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
 |---:|---|---|---:|:---:|---:|---:|:---:|
-| 1 | pathfinder_lns | Tazeem Mahashin | 1.1486 | 20/20 | 342914 | 10953.87 | ✓ |
+| 1 | pathfinder_lns | Tazeem Mahashin | 1.1508 | 20/20 | 342012 | 28714.95 | ✓ |
 
 ## hard  (9 cases)
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
 |---:|---|---|---:|:---:|---:|---:|:---:|
-| 1 | pathfinder_lns | Tazeem Mahashin | 1.3855 | 9/9 | 145333 | — |  |
+| 1 | pathfinder_lns | Tazeem Mahashin | 1.3874 | 9/9 | 145097 | — |  |
 | 2 | negotiated_x2 | Anthropic (reference) | 1.0168 | 9/9 | 198763 | 177.01 | ✓ |
 | 3 | negotiated | Anthropic (reference) | 1.0000 | 9/9 | 201863 | 85.20 | ✓ |
 | 4 | negotiated_fast | Anthropic (reference) | — | 8/9 | — | 61.74 |  |
@@ -25,23 +25,23 @@ do not edit it by hand.
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
 |---:|---|---|---:|:---:|---:|---:|:---:|
-| 1 | pathfinder_lns | Tazeem Mahashin | 1.1235 | 8/8 | 539504 | 24008.42 | ✓ |
+| 1 | pathfinder_lns | Tazeem Mahashin | 1.1272 | 8/8 | 537654 | 43209.98 | ✓ |
 
 ## stress  (1 cases)
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
 |---:|---|---|---:|:---:|---:|---:|:---:|
-| 1 | pathfinder_lns | Tazeem Mahashin | 1.0906 | 1/1 | 1049818 | 31258.94 | ✓ |
+| 1 | pathfinder_lns | Tazeem Mahashin | 1.0911 | 1/1 | 1049344 | 34860.24 | ✓ |
 
 ## congested  (4 cases)
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
 |---:|---|---|---:|:---:|---:|---:|:---:|
-| 1 | pathfinder_lns | Tazeem Mahashin | 1.3037 | 4/4 | 493503 | 25366.32 | ✓ |
+| 1 | pathfinder_lns | Tazeem Mahashin | 1.3083 | 4/4 | 491527 | 42167.68 | ✓ |
 
 ## designs  (3 cases)
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
 |---:|---|---|---:|:---:|---:|---:|:---:|
-| 1 | pathfinder_lns | Tazeem Mahashin | 1.4242 | 3/3 | 210847 | 19666.23 | ✓ |
+| 1 | pathfinder_lns | Tazeem Mahashin | 1.4328 | 3/3 | 209561 | 32866.84 | ✓ |
 
