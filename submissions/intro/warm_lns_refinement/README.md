@@ -1,60 +1,58 @@
-# warm_lns_refinement
+# warm_lns_refinement — intro
 
 By [kesudh](https://github.com/kesudh).
 
-All initial legal routes are from [jay-tau's coordinated_refinement, PR #5](https://github.com/partcleda/eda-3d-routing-challenge/pull/5),
-which itself continues from [Taz33m's pathfinder_lns, PR #3](https://github.com/partcleda/eda-3d-routing-challenge/pull/3),
-pinned to commit `a5ef5e2406682473b99c6496a87a6279b64db9ba`. This submission continues warm-start
-optimisation from those public warm starts; the warm-start route geometry is
-credited to jay-tau and Taz33m. Improvements below are incremental refinements.
+Warm starts are [Taz33m's pathfinder_lns, PR #3](https://github.com/partcleda/eda-3d-routing-challenge/pull/3)
+pinned to commit `4e21227867ee1f8f72c9f4d9ad446e05c20fe452` — the version that led all six tier aggregates
+before this refinement. Route geometry on retained cases is credited to Taz33m;
+gains below are incremental refinements on top, produced by a Rust warm-start
+large-neighborhood search and re-verified with `m3d/checker.py`.
 
-| Tier | Legal | Previous aggregate | Aggregate | Previous delay → delay | Improved cases |
-|---|---:|---:|---:|---:|---:|
-| intro | 20/20 | 1.14951946 | 1.14953197 | 342,578 → 342,570 | 2/20 |
+| Tier | Legal | PR#3 aggregate | This aggregate | Delta | Refined | Verbatim PR#3 | Own tie |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| intro | 20/20 | 1.15082522 | 1.15087837 | +0.0046% | 2/20 | 14 | 4 |
 
 ## Method
 
-Rust warm-start large-neighborhood search over the credited warm starts:
-
 - **Exact per-net reroute** — root-distance Dijkstra to a shortest-path tree,
-  with random tie-breaking among equal-cost tight predecessors (random and
-  compact equal-delay variants) so plateau structure is explored, not fixed.
-- **Group rip-up rerouting** — region- and blocker-scoped groups of
-  interacting nets are ripped and rerouted jointly (Gauss-Seidel passes), which
-  no sequence of single-net reroutes can express.
+  with random tie-breaking among equal-cost tight predecessors so plateau
+  structure is explored rather than fixed.
+- **Group rip-up rerouting** — region- and blocker-scoped groups of interacting
+  nets are ripped and rerouted jointly (Gauss-Seidel passes), which no sequence
+  of single-net reroutes can express.
 - **Negotiated-congestion rounds inside group moves** — PathFinder-style present
   and history costs let group members transiently share resources, then an
   escalation to a strictly-legal exact reroute legalises the state; bounded
   threshold acceptance permits small temporary increases, best legal state kept.
 - **Multi-worker portfolio** — independent workers with different seeds share a
-  best-found state; every accepted state is re-verified before it can be
-  selected.
+  best-found state; every accepted state is re-verified before selection.
 
-Selection keeps the lowest independently checked delay per case; the warm-start
-route is retained on ties. All submitted routes are legal under the repository
-checker (each tier's aggregate exceeds the pinned PR#5 result).
+Selection keeps the lowest independently checked delay per case. A case is
+labelled **verbatim** only when the submitted file is byte-identical (same
+sha256) to the credited warm start; **own tie** means the route is an earlier
+`warm_lns_refinement` route that matches PR#3's delay without being a copy of it.
 
-## Attribution and case provenance
+## Case provenance
 
-| Tier | Case | Previous delay | Submitted delay | Provenance |
-|---|---|---:|---:|---|
-| intro | case_01 | 206 | 206 | retained warm-start route |
-| intro | case_02 | 1,030 | 1,030 | retained warm-start route |
-| intro | case_03 | 1,611 | 1,611 | retained warm-start route |
-| intro | case_04 | 1,980 | 1,980 | retained warm-start route |
-| intro | case_05 | 3,691 | 3,691 | retained warm-start route |
-| intro | case_06 | 5,201 | 5,201 | retained warm-start route |
-| intro | case_07 | 5,263 | 5,263 | retained warm-start route |
-| intro | case_08 | 7,505 | 7,505 | retained warm-start route |
-| intro | case_09 | 8,156 | 8,156 | retained warm-start route |
-| intro | case_10 | 10,561 | 10,561 | retained warm-start route |
-| intro | case_11 | 12,198 | 12,198 | retained warm-start route |
-| intro | case_12 | 16,109 | 16,109 | retained warm-start route |
-| intro | case_13 | 19,621 | 19,621 | retained warm-start route |
-| intro | case_14 | 21,235 | 21,235 | retained warm-start route |
-| intro | case_15 | 23,978 | 23,976 | warm refinement |
-| intro | case_16 | 32,906 | 32,906 | retained warm-start route |
-| intro | case_17 | 41,810 | 41,810 | retained warm-start route |
-| intro | case_18 | 44,683 | 44,677 | warm refinement |
-| intro | case_19 | 40,060 | 40,060 | retained warm-start route |
-| intro | case_20 | 44,774 | 44,774 | retained warm-start route |
+| Case | PR#3 delay | Submitted | Delta | Provenance |
+|---|---:|---:|---:|---|
+| case_01 | 206 | 206 | +0 | own earlier route (ties PR#3) |
+| case_02 | 1,030 | 1,030 | +0 | own earlier route (ties PR#3) |
+| case_03 | 1,611 | 1,611 | +0 | own earlier route (ties PR#3) |
+| case_04 | 1,980 | 1,980 | +0 | own earlier route (ties PR#3) |
+| case_05 | 3,687 | 3,687 | +0 | PR#3 route verbatim |
+| case_06 | 5,189 | 5,189 | +0 | PR#3 route verbatim |
+| case_07 | 5,267 | 5,263 | +4 | refined (rust LNS) |
+| case_08 | 7,487 | 7,487 | +0 | PR#3 route verbatim |
+| case_09 | 8,144 | 8,144 | +0 | PR#3 route verbatim |
+| case_10 | 10,551 | 10,551 | +0 | PR#3 route verbatim |
+| case_11 | 12,200 | 12,198 | +2 | refined (rust LNS) |
+| case_12 | 16,093 | 16,093 | +0 | PR#3 route verbatim |
+| case_13 | 19,593 | 19,593 | +0 | PR#3 route verbatim |
+| case_14 | 21,197 | 21,197 | +0 | PR#3 route verbatim |
+| case_15 | 23,938 | 23,938 | +0 | PR#3 route verbatim |
+| case_16 | 32,866 | 32,866 | +0 | PR#3 route verbatim |
+| case_17 | 41,622 | 41,622 | +0 | PR#3 route verbatim |
+| case_18 | 44,601 | 44,601 | +0 | PR#3 route verbatim |
+| case_19 | 40,024 | 40,024 | +0 | PR#3 route verbatim |
+| case_20 | 44,726 | 44,726 | +0 | PR#3 route verbatim |

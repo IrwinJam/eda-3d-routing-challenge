@@ -10,13 +10,13 @@ do not edit it by hand.
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
 |---:|---|---|---:|:---:|---:|---:|:---:|
-| 1 | warm_lns_refinement | kesudh | 1.1495 | 20/20 | 342570 | 6045.00 | ✓ |
+| 1 | warm_lns_refinement | kesudh | 1.1509 | 20/20 | 342006 | — |  |
 
 ## hard  (9 cases)
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
 |---:|---|---|---:|:---:|---:|---:|:---:|
-| 1 | warm_lns_refinement | kesudh | 1.3858 | 9/9 | 145305 | 10829.00 | ✓ |
+| 1 | warm_lns_refinement | kesudh | 1.3874 | 9/9 | 145095 | — |  |
 | 2 | negotiated_x2 | Anthropic (reference) | 1.0168 | 9/9 | 198763 | 177.01 | ✓ |
 | 3 | negotiated | Anthropic (reference) | 1.0000 | 9/9 | 201863 | 85.20 | ✓ |
 | 4 | negotiated_fast | Anthropic (reference) | — | 8/9 | — | 61.74 |  |
@@ -25,23 +25,23 @@ do not edit it by hand.
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
 |---:|---|---|---:|:---:|---:|---:|:---:|
-| 1 | warm_lns_refinement | kesudh | 1.1248 | 8/8 | 538872 | 9648.00 | ✓ |
+| 1 | warm_lns_refinement | kesudh | 1.1274 | 8/8 | 537576 | 7543.00 | ✓ |
 
 ## stress  (1 cases)
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
 |---:|---|---|---:|:---:|---:|---:|:---:|
-| 1 | warm_lns_refinement | kesudh | 1.0906 | 1/1 | 1049762 | 1987.00 | ✓ |
+| 1 | warm_lns_refinement | kesudh | 1.0911 | 1/1 | 1049332 | 2070.00 | ✓ |
 
 ## congested  (4 cases)
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
 |---:|---|---|---:|:---:|---:|---:|:---:|
-| 1 | warm_lns_refinement | kesudh | 1.3043 | 4/4 | 493171 | 4819.00 | ✓ |
+| 1 | warm_lns_refinement | kesudh | 1.3085 | 4/4 | 491467 | 3621.00 | ✓ |
 
 ## designs  (3 cases)
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
 |---:|---|---|---:|:---:|---:|---:|:---:|
-| 1 | warm_lns_refinement | kesudh | 1.4257 | 3/3 | 210639 | 3613.00 | ✓ |
+| 1 | warm_lns_refinement | kesudh | 1.4331 | 3/3 | 209509 | 3615.00 | ✓ |
 

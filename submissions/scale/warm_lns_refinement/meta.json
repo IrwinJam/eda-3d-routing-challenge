@@ -1,94 +1,83 @@
 {
-  "author": "kesudh",
-  "url": "https://github.com/kesudh",
-  "method": "Rust warm-start large-neighborhood search: exact per-net SPT reroute with equal-delay tie exploration, group rip-up with negotiated-congestion rounds (PathFinder-style history/present costs), bounded threshold acceptance; every accepted state re-verified by the repository checker.",
-  "date": "2026-10-01",
-  "snapshot_at_utc": "2026-10-01T07:35:39.523712+00:00",
-  "warm_start": {
-    "author": "jay-tau",
-    "submission": "coordinated_refinement",
-    "pull_request": "https://github.com/partcleda/eda-3d-routing-challenge/pull/5"
+ "author": "kesudh",
+ "url": "https://github.com/kesudh",
+ "method": "Rust warm-start large-neighborhood search: exact per-net SPT reroute with equal-delay tie exploration, group rip-up with negotiated-congestion rounds (PathFinder-style history/present costs), bounded threshold acceptance; every accepted state re-verified by the repository checker.",
+ "date": "2026-10-01",
+ "warm_start": {
+  "author": "Taz33m",
+  "submission": "pathfinder_lns",
+  "pull_request": "https://github.com/partcleda/eda-3d-routing-challenge/pull/3",
+  "commit": "4e21227"
+ },
+ "upstream_credit": {
+  "author": "Taz33m",
+  "submission": "pathfinder_lns",
+  "pull_request": "https://github.com/partcleda/eda-3d-routing-challenge/pull/3",
+  "commit": "4e21227867ee1f8f72c9f4d9ad446e05c20fe452",
+  "note": "Warm starts are PR#3's routes at head 4e21227, the version that led all six tier aggregates before this refinement."
+ },
+ "selection": "Lowest checker-recomputed delay across the warm start and every refinement run; the warm-start route is retained verbatim (identical sha256) on cases with no strict win.",
+ "runtime": "Per-case wall seconds of the incremental refinement only; excludes warm-start generation.",
+ "tier": "scale",
+ "aggregate": 1.12740055,
+ "warm_start_aggregate": 1.12722454,
+ "legal": "8/8",
+ "cases": [
+  {
+   "case": "case_01",
+   "warm_start_delay": 39308,
+   "total_delay": 39294,
+   "delta": 14,
+   "method": "refined (rust LNS)"
   },
-  "upstream_credit": {
-    "author": "Taz33m",
-    "submission": "pathfinder_lns",
-    "pull_request": "https://github.com/partcleda/eda-3d-routing-challenge/pull/3",
-    "commit": "a5ef5e2406682473b99c6496a87a6279b64db9ba"
+  {
+   "case": "case_02",
+   "warm_start_delay": 45458,
+   "total_delay": 45452,
+   "delta": 6,
+   "method": "refined (rust LNS)"
   },
-  "selection": "Lowest checker-recomputed delay; original route retained on ties.",
-  "runtime": "Per-case wall seconds of the incremental refinement only; excludes warm-start generation.",
-  "cases": [
-    {
-      "case": "case_01",
-      "warm_start_delay": 39398,
-      "total_delay": 39398,
-      "strict_improvement": false,
-      "method": "retained warm-start route",
-      "warm_start_sha256": "c8330b15feccadb185b439e79bc84e86b93c94b2cad31155d77c454a267b75a3",
-      "route_sha256": "c8330b15feccadb185b439e79bc84e86b93c94b2cad31155d77c454a267b75a3"
-    },
-    {
-      "case": "case_02",
-      "warm_start_delay": 45508,
-      "total_delay": 45508,
-      "strict_improvement": false,
-      "method": "retained warm-start route",
-      "warm_start_sha256": "05ca355bb6afe2d7d0ff5a55926999bed9e8636b2dd82b4d26178c1355aa1658",
-      "route_sha256": "05ca355bb6afe2d7d0ff5a55926999bed9e8636b2dd82b4d26178c1355aa1658"
-    },
-    {
-      "case": "case_03",
-      "warm_start_delay": 56530,
-      "total_delay": 56530,
-      "strict_improvement": false,
-      "method": "retained warm-start route",
-      "warm_start_sha256": "a4cc6b80131d283e1adb55927441f5a47ef3df9cf8ecb103bd1b933aae800ccb",
-      "route_sha256": "a4cc6b80131d283e1adb55927441f5a47ef3df9cf8ecb103bd1b933aae800ccb"
-    },
-    {
-      "case": "case_04",
-      "warm_start_delay": 57190,
-      "total_delay": 57190,
-      "strict_improvement": false,
-      "method": "retained warm-start route",
-      "warm_start_sha256": "0ebe04d1f5b374138d5b75dd29910c962dbc551dbd29b9170b51e8c83c818f8c",
-      "route_sha256": "0ebe04d1f5b374138d5b75dd29910c962dbc551dbd29b9170b51e8c83c818f8c"
-    },
-    {
-      "case": "case_05",
-      "warm_start_delay": 66361,
-      "total_delay": 66357,
-      "strict_improvement": true,
-      "method": "warm negotiated LNS refinement (rust)",
-      "warm_start_sha256": "65365a916769bead4a2923c2f9a4520e43a84edf3df98b6066e9f417052229b2",
-      "route_sha256": "9fb96328051e92fef19040ba771472e6e75cd4b640ddff3c7e75ee35cb67a78d"
-    },
-    {
-      "case": "case_06",
-      "warm_start_delay": 78349,
-      "total_delay": 78349,
-      "strict_improvement": false,
-      "method": "retained warm-start route",
-      "warm_start_sha256": "f9e78b8296d712de7abfcc1fe0c6f421ac5e08e73cc674aec205708d4d01041a",
-      "route_sha256": "f9e78b8296d712de7abfcc1fe0c6f421ac5e08e73cc674aec205708d4d01041a"
-    },
-    {
-      "case": "case_07",
-      "warm_start_delay": 86611,
-      "total_delay": 86611,
-      "strict_improvement": false,
-      "method": "retained warm-start route",
-      "warm_start_sha256": "88525a13bb8515e85ba1cfc6af4bbf0d4e1a9930d4d4ea809e77662fa2be3d93",
-      "route_sha256": "88525a13bb8515e85ba1cfc6af4bbf0d4e1a9930d4d4ea809e77662fa2be3d93"
-    },
-    {
-      "case": "case_08",
-      "warm_start_delay": 108929,
-      "total_delay": 108929,
-      "strict_improvement": false,
-      "method": "retained warm-start route",
-      "warm_start_sha256": "d8ec45243f5bb47bc81f2c1114d0c0a19cc715274d9f804e5b3d41ebe6793e1d",
-      "route_sha256": "d8ec45243f5bb47bc81f2c1114d0c0a19cc715274d9f804e5b3d41ebe6793e1d"
-    }
-  ]
+  {
+   "case": "case_03",
+   "warm_start_delay": 56440,
+   "total_delay": 56436,
+   "delta": 4,
+   "method": "refined (rust LNS)"
+  },
+  {
+   "case": "case_04",
+   "warm_start_delay": 57086,
+   "total_delay": 57080,
+   "delta": 6,
+   "method": "refined (rust LNS)"
+  },
+  {
+   "case": "case_05",
+   "warm_start_delay": 66215,
+   "total_delay": 66209,
+   "delta": 6,
+   "method": "refined (rust LNS)"
+  },
+  {
+   "case": "case_06",
+   "warm_start_delay": 78155,
+   "total_delay": 78129,
+   "delta": 26,
+   "method": "refined (rust LNS)"
+  },
+  {
+   "case": "case_07",
+   "warm_start_delay": 86427,
+   "total_delay": 86421,
+   "delta": 6,
+   "method": "refined (rust LNS)"
+  },
+  {
+   "case": "case_08",
+   "warm_start_delay": 108565,
+   "total_delay": 108555,
+   "delta": 10,
+   "method": "refined (rust LNS)"
+  }
+ ]
 }
