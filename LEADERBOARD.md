@@ -27,6 +27,12 @@ do not edit it by hand.
 |---:|---|---|---:|:---:|---:|---:|:---:|
 | 1 | drama3d-portfolio | YJ Kim | 1.0409 | 8/8 | 581396 | — |  |
 
+## stress  (1 cases)
+
+| rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
+|---:|---|---|---:|:---:|---:|---:|:---:|
+| 1 | drama3d-portfolio | YJ Kim | 1.0201 | 1/1 | 1122320 | — |  |
+
 ## designs  (3 cases)
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
