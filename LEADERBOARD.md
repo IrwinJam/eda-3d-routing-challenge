@@ -33,6 +33,12 @@ do not edit it by hand.
 |---:|---|---|---:|:---:|---:|---:|:---:|
 | 1 | drama3d-portfolio | YJ Kim | 1.0201 | 1/1 | 1122320 | — |  |
 
+## congested  (4 cases)
+
+| rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
+|---:|---|---|---:|:---:|---:|---:|:---:|
+| 1 | drama3d-portfolio | YJ Kim | 1.0160 | 4/4 | 641225 | — |  |
+
 ## designs  (3 cases)
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
