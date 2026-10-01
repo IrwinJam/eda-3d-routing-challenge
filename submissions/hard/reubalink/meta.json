@@ -2,5 +2,5 @@
  "author": "reubalink",
  "url": "https://github.com/partcleda/eda-3d-routing-challenge",
  "date": "2026-10-01",
- "method": "reubalink: detour-ranked large-neighborhood search on negotiated_x2"
+ "method": "reubalink: continued detour-ranked large-neighborhood search from the 1.0511 routes until each hard case plateaued"
 }

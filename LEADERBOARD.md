@@ -10,8 +10,8 @@ do not edit it by hand.
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
 |---:|---|---|---:|:---:|---:|---:|:---:|
-| 1 | reubalink | reubalink | 1.0511 | 9/9 | 192411 | 20.16 | ✓ |
-| 2 | negotiated_x2 | Anthropic (reference) | 1.0168 | 9/9 | 198763 | 177.01 |  |
-| 3 | negotiated | Anthropic (reference) | 1.0000 | 9/9 | 201863 | 85.20 |  |
+| 1 | reubalink | reubalink | 1.1503 | 9/9 | 175117 | 482.15 | ✓ |
+| 2 | negotiated_x2 | Anthropic (reference) | 1.0168 | 9/9 | 198763 | 177.01 | ✓ |
+| 3 | negotiated | Anthropic (reference) | 1.0000 | 9/9 | 201863 | 85.20 | ✓ |
 | 4 | negotiated_fast | Anthropic (reference) | — | 8/9 | — | 61.74 |  |
 
