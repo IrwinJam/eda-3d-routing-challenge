@@ -21,7 +21,8 @@ class TestLeaderboardRender(unittest.TestCase):
     def test_committed_leaderboard_is_current(self):
         # the invariant CI enforces with `leaderboard-all --check`
         self.assertTrue(os.path.exists("LEADERBOARD.md"))
-        on_disk = open("LEADERBOARD.md").read().strip()
+        with open("LEADERBOARD.md", encoding="utf-8") as fh:
+            on_disk = fh.read().strip()
         self.assertEqual(on_disk, _render_leaderboard_md("submissions").strip())
 
 

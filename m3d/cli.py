@@ -290,7 +290,7 @@ def cmd_leaderboard(args: argparse.Namespace) -> int:
         json.dump(out, open(args.out, "w"), indent=1)
         print(f"wrote leaderboard -> {args.out}")
     if args.md:
-        with open(args.md, "w") as fh:
+        with open(args.md, "w", encoding="utf-8") as fh:
             fh.write(f"# Leaderboard — {man.get('tier', args.suite)} "
                      f"({man['n_cases']} cases)\n\n")
             fh.write("| rank | submission | aggregate | legal | total delay | runtime (s) | on Pareto |\n")
@@ -380,7 +380,8 @@ def cmd_leaderboard_all(args: argparse.Namespace) -> int:
     md = _render_leaderboard_md(root)
     if args.check:
         try:
-            current = open(args.out).read()
+            with open(args.out, encoding="utf-8") as fh:
+                current = fh.read()
         except FileNotFoundError:
             current = ""
         if current.strip() != md.strip():
@@ -389,7 +390,7 @@ def cmd_leaderboard_all(args: argparse.Namespace) -> int:
             return 1
         print(f"{args.out} is up to date.")
         return 0
-    with open(args.out, "w") as fh:
+    with open(args.out, "w", encoding="utf-8") as fh:
         fh.write(md + "\n")
     print(f"wrote {args.out}")
     return 0

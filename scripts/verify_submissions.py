@@ -19,6 +19,9 @@ from m3d.cli import _tier_dir_map, _load_manifest, _submission_entries  # noqa: 
 
 
 def main(root: str = "submissions") -> int:
+    # report lines contain non-ASCII (✓, —); don't crash on a cp1252 Windows console
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(errors="replace")
     tier_dirs = _tier_dir_map()
     errors = []
     checked = 0
