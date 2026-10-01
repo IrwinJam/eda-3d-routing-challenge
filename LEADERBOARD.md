@@ -21,3 +21,15 @@ do not edit it by hand.
 | 3 | negotiated | Anthropic (reference) | 1.0000 | 9/9 | 201863 | 85.20 | ✓ |
 | 4 | negotiated_fast | Anthropic (reference) | — | 8/9 | — | 61.74 |  |
 
+## scale  (8 cases)
+
+| rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
+|---:|---|---|---:|:---:|---:|---:|:---:|
+| 1 | drama3d-portfolio | YJ Kim | 1.0328 | 8/8 | 586162 | — |  |
+
+## designs  (3 cases)
+
+| rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
+|---:|---|---|---:|:---:|---:|---:|:---:|
+| 1 | drama3d-portfolio | YJ Kim | 1.1303 | 3/3 | 268805 | — |  |
+
