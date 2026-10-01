@@ -1,66 +1,71 @@
 [
   {
     "case": "case_01",
-    "total_delay": 11154,
-    "candidate": "root_id",
-    "route_sha256": "4e4b295cfd477424880f6b31ee846267d3b75f0295302aed519d7fcf7168eadc",
-    "search_policy": "fixed_top2"
+    "total_delay": 9428,
+    "method": "Neural-assisted candidate-tree selection within neighborhood repair",
+    "route_sha256": "42bd7eb1d2dd801dd14d8e1f83eecd2b88d58f85926be747b127e1d1db7f0ded",
+    "local_experiment_artifact": "experiments/neural_route_pool/artifacts/routes/public/current_1907/case_01.sol.json"
   },
   {
     "case": "case_02",
-    "total_delay": 18760,
-    "candidate": "published negotiated_x2",
-    "route_sha256": "7e56f35212304734a730d255eea46b82073c1127f2614b723b25e49daa6e20a8",
-    "credit": "Anthropic (reference), Partcl EDA routing challenge",
-    "source": "submissions/hard/negotiated_x2/case_02.sol.json"
+    "total_delay": 14020,
+    "method": "Neural-assisted candidate-tree selection within neighborhood repair",
+    "route_sha256": "144f9df4f185cdf49e5f892f9333d16fd9d436accded2d03a9777d02531742fe",
+    "local_experiment_artifact": "experiments/neural_route_pool/artifacts/routes/public/neural_2909/case_02.sol.json"
   },
   {
     "case": "case_03",
-    "total_delay": 14164,
-    "candidate": "root_id",
-    "route_sha256": "39b57cf58dbfd4543a80be1bb2f90dfb182d67cb98c38c945cee3ecae366e644",
-    "search_policy": "fixed_top2"
+    "total_delay": 11718,
+    "method": "Neural-assisted candidate-tree selection within neighborhood repair",
+    "route_sha256": "383503ecb0c7a9d8193f0ac2672f5d4e1f524591bf96ff0ffa08025ac3a0e24a",
+    "local_experiment_artifact": "experiments/neural_route_pool/artifacts/routes/public/current_2909/case_03.sol.json"
   },
   {
     "case": "case_04",
-    "total_delay": 16165,
-    "candidate": "root_access",
-    "route_sha256": "ae01a94c25d65c2c4e3432b1d12613c5aa3d9bdcb10c2773b39366ca9c6e36f6",
-    "search_policy": "xgb_top1"
+    "total_delay": 14353,
+    "method": "Neural-assisted candidate-tree selection within neighborhood repair",
+    "route_sha256": "3c02e9f0ff05ad0c8161ddb97049d1c8a872d53ece2d62df96cd6f64a793feac",
+    "local_experiment_artifact": "experiments/neural_route_pool/artifacts/routes/public/neural_1907/case_04.sol.json"
   },
   {
     "case": "case_05",
-    "total_delay": 19761,
-    "candidate": "root_id",
-    "route_sha256": "33b428b6e80db0a3543c181baf9d8c1115b1186503e14da78cf5683847c95258",
-    "search_policy": "fixed_top2"
+    "total_delay": 16455,
+    "method": "Neural-assisted candidate-tree selection within neighborhood repair",
+    "route_sha256": "2454dd1db57ff2fc373769ff7d11362d1bdbc5e43b420941a3b10d5f3efccf3e",
+    "local_experiment_artifact": "experiments/neural_route_pool/artifacts/routes/public/current_1907/case_05.sol.json"
   },
   {
     "case": "case_06",
-    "total_delay": 26160,
-    "candidate": "root_gentle",
-    "route_sha256": "de924b40c648c7c4c9331f2dab87869b28f8f0fb6f9776f960e078fcb8917321",
-    "search_policy": "xgb_top1"
+    "total_delay": 21412,
+    "method": "Neural-assisted candidate-tree selection within neighborhood repair",
+    "route_sha256": "99c078c70a5dd4fa8dc1058329ab826fd21e30c1380fa61876fd2886ae4feb43",
+    "local_experiment_artifact": "experiments/neural_route_pool/artifacts/routes/public/neural_2909/case_06.sol.json"
   },
   {
     "case": "case_07",
-    "total_delay": 29021,
-    "candidate": "root_standard",
-    "route_sha256": "262cb384c8ef3e5f1188c471006dd501a994174fb3962cb150c829a1a525eb39",
-    "search_policy": "xgb_top1"
+    "total_delay": 23685,
+    "method": "Neural-assisted repair, then an eight-net negotiated-congestion repair",
+    "route_sha256": "2fa8abe75d9e24dcc69057b9ecea43023cbffd102764e70dd9e7806d479ffda0",
+    "local_experiment_artifact": "experiments/direct_joint/artifacts/extension_routes/case_07_n8_extended_current.sol.json",
+    "starting_artifact": "experiments/neural_route_pool/artifacts/routes/public/neural_2909/case_07.sol.json",
+    "starting_route_sha256": "a7677ea219022660e3ba3e259e96888753efc930484103db66b7c865efb2c87a",
+    "final_repair_delay_saving": 32
   },
   {
     "case": "case_08",
-    "total_delay": 30000,
-    "candidate": "root_low_present",
-    "route_sha256": "bdd46f9829480be15b741e37495e29dcffe6e1e2b38fe56473843436d4260455",
-    "search_policy": "fixed_top1"
+    "total_delay": 23982,
+    "method": "Heuristic repair, then a six-net joint-grid MILP solve",
+    "route_sha256": "7f3eb323736a15ecdce832202b000228fc65f2aa9e53a7ff60a32f0128657e2b",
+    "local_experiment_artifact": "experiments/direct_joint/artifacts/routes/case_08_n6/grid_300.sol.json",
+    "starting_artifact": "experiments/neural_route_pool/artifacts/routes/public/current_1907/case_08.sol.json",
+    "starting_route_sha256": "311f3708f86b65ee6e1d4819ed47af7687f86a16ab89015e06b244de6194afc9",
+    "final_repair_delay_saving": 10
   },
   {
     "case": "case_09",
-    "total_delay": 26156,
-    "candidate": "root_access",
-    "route_sha256": "d8f26db47c29c0c536110ac7a636c0a46749f6b54b140ec5f925023c7e8b0501",
-    "search_policy": "xgb_top1"
+    "total_delay": 23402,
+    "method": "Neural-assisted candidate-tree selection within neighborhood repair",
+    "route_sha256": "645c5f9443b92c2fde1f2d5bcbe0438979e61f12780291ca5c8ba6d7f89b5ac1",
+    "local_experiment_artifact": "experiments/neural_route_pool/artifacts/routes/public/neural_2909/case_09.sol.json"
   }
 ]

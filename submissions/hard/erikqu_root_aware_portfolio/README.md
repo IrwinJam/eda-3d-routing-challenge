@@ -1,26 +1,30 @@
 # Root-aware routing portfolio
 
-Complete hard-tier submission: 9/9 legal, total delay 191341, aggregate score 1.0563405766751923.
+Complete hard-tier submission: **9/9 legal**, total delay **158455**, aggregate score **1.274474947945242**.
 
-This offline portfolio keeps the minimum-delay legal saved route for each released case. The route pool contains root-distance-aware negotiated-congestion variants evaluated by XGBoost-guided and fixed candidate policies, plus the published reference variants. This score describes the saved portfolio; it is not a held-out score of a single learned selector.
+This offline portfolio keeps the lowest-delay verified complete solution for each released case across repeated searches. It combines root-distance-aware negotiated congestion, coordinated neighborhood repair, neural-assisted candidate-tree selection, and a joint-grid mixed-integer refinement. Public cases were used for search and selection; this score is not a held-out evaluation of a single learned solver. Runtime is omitted because producing the portfolio involved multiple runs and warm starts.
 
-The root-aware variants initialize each existing tree vertex in the multi-source shortest-path search with its actual driver-to-vertex delay. This makes sink attachment account for the complete driver path. Variants differ in net order and congestion pressure/history schedules. Every selected route is checked independently with the unchanged repository checker.
+The underlying search starts from saved legal solutions. It selects groups of blocking or nearby nets, removes their routes, and jointly repairs the group while keeping all other routes fixed. Negotiated congestion penalizes contested resources; root-aware shortest-path searches account for driver-to-sink delay, including shared-trunk delay once for each downstream sink. Parallel repair workers explore route orders and neighborhoods, and legal improvements are retained.
 
-The learned selector was trained on separate generated layouts with layout-level stratified four-fold validation and GPU XGBoost. A later 12-feature tree-shape extension did not improve this portfolio. Candidate selection and minimum-delay retention on released cases constitute offline search. Runtime is omitted because the search used multiple runs.
+Some selected outputs came from repairs that harvested candidate trees and used a neural candidate/resource message-passing model to guide compatible-tree selection. That model was trained on 72 separately generated layouts with layout-disjoint, configuration-stratified four-fold validation. Although some public cases contributed better saved outputs, the neural variant underperformed the heuristic on fresh layouts; this submission makes no claim that neural selection is generally better. Earlier search stages also explored GPU-trained XGBoost policies and beam-search variants.
 
-Case 02 reuses the published `negotiated_x2` route, credited to Anthropic (reference) in this repository. The router is derived from the repository’s negotiated-congestion implementation by Partcl, Inc., under the repository MIT license. See `provenance.json` for per-case origins.
+Case 07 adds an eight-net heuristic repair saving 32 delay units. Case 08 adds a six-net joint-grid MILP repair saving 10 units. The MILP uses binary vertex ownership, continuous driver-to-sink aggregate flow, and exclusive vertex capacity. Its objective counts flow-weighted physical delay; the decoded trees are checked with the original checker. That solve fixes outside-group routes and restricts the selected nets to search corridors, so its optimum does not certify a globally optimal case solution.
 
-| Case | Candidate | Total delay |
-|---|---|---:|
-| case_01 | root_id | 11154 |
-| case_02 | published negotiated_x2 | 18760 |
-| case_03 | root_id | 14164 |
-| case_04 | root_access | 16165 |
-| case_05 | root_id | 19761 |
-| case_06 | root_gentle | 26160 |
-| case_07 | root_standard | 29021 |
-| case_08 | root_low_present | 30000 |
-| case_09 | root_access | 26156 |
+The implementation derives from the repository's negotiated-congestion router by Partcl, Inc., under its MIT license. Earlier portfolio stages included the published reference routes credited to Anthropic (reference); the current case 02 is a subsequently optimized route, not an unchanged copy of the published `negotiated_x2` submission.
+
+`provenance.json` records each final route's SHA-256, method, and local experiment artifact identifier. These identifiers describe the offline search archive; the experimental source code and training artifacts are not included in this route-only submission. All submitted routes can be independently checked and scored using the unchanged repository toolkit.
+
+| Case | Total delay | Final source method |
+|---|---:|---|
+| case_01 | 9428 | Neural-assisted candidate-tree selection within neighborhood repair |
+| case_02 | 14020 | Neural-assisted candidate-tree selection within neighborhood repair |
+| case_03 | 11718 | Neural-assisted candidate-tree selection within neighborhood repair |
+| case_04 | 14353 | Neural-assisted candidate-tree selection within neighborhood repair |
+| case_05 | 16455 | Neural-assisted candidate-tree selection within neighborhood repair |
+| case_06 | 21412 | Neural-assisted candidate-tree selection within neighborhood repair |
+| case_07 | 23685 | Neural-assisted repair, then an eight-net negotiated-congestion repair |
+| case_08 | 23982 | Heuristic repair, then a six-net joint-grid MILP solve |
+| case_09 | 23402 | Neural-assisted candidate-tree selection within neighborhood repair |
 
 Verify from the repository root:
 
