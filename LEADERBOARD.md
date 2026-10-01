@@ -25,11 +25,11 @@ do not edit it by hand.
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
 |---:|---|---|---:|:---:|---:|---:|:---:|
-| 1 | drama3d-portfolio | YJ Kim | 1.0328 | 8/8 | 586162 | — |  |
+| 1 | drama3d-portfolio | YJ Kim | 1.0409 | 8/8 | 581396 | — |  |
 
 ## designs  (3 cases)
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto |
 |---:|---|---|---:|:---:|---:|---:|:---:|
-| 1 | drama3d-portfolio | YJ Kim | 1.1303 | 3/3 | 268805 | — |  |
+| 1 | drama3d-portfolio | YJ Kim | 1.1369 | 3/3 | 266925 | — |  |
 
