@@ -1,0 +1,31 @@
+{
+  "author": "kesudh",
+  "url": "https://github.com/kesudh",
+  "method": "Rust warm-start large-neighborhood search: exact per-net SPT reroute with equal-delay tie exploration, group rip-up with negotiated-congestion rounds (PathFinder-style history/present costs), bounded threshold acceptance; every accepted state re-verified by the repository checker.",
+  "date": "2026-10-01",
+  "snapshot_at_utc": "2026-10-01T07:35:42.346127+00:00",
+  "warm_start": {
+    "author": "jay-tau",
+    "submission": "coordinated_refinement",
+    "pull_request": "https://github.com/partcleda/eda-3d-routing-challenge/pull/5"
+  },
+  "upstream_credit": {
+    "author": "Taz33m",
+    "submission": "pathfinder_lns",
+    "pull_request": "https://github.com/partcleda/eda-3d-routing-challenge/pull/3",
+    "commit": "a5ef5e2406682473b99c6496a87a6279b64db9ba"
+  },
+  "selection": "Lowest checker-recomputed delay; original route retained on ties.",
+  "runtime": "Per-case wall seconds of the incremental refinement only; excludes warm-start generation.",
+  "cases": [
+    {
+      "case": "case_01",
+      "warm_start_delay": 1049764,
+      "total_delay": 1049762,
+      "strict_improvement": true,
+      "method": "warm negotiated LNS refinement (rust)",
+      "warm_start_sha256": "a096061c841e66932b7a17e39d0784dd88db4c574a11ecb894aa6c6e08d4d03e",
+      "route_sha256": "9d6aa401a3466ad71808767f3917c5763c6096afdc025acaf69e3c5943355f42"
+    }
+  ]
+}
