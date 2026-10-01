@@ -2,5 +2,5 @@
  "author": "reubalink",
  "url": "https://github.com/partcleda/eda-3d-routing-challenge",
  "date": "2026-10-01",
- "method": "reubalink: conflict-based pair search, then one gradient-boosted ranker on pairs that failed the detour or pin-box filter and a capped set of triples; rebuilds are shortest-path trees with a one-conflict branch"
+ "method": "shortest-path trees, fanout-scaled PathFinder negotiation, exact per-net reroute, then window LNS. Routes are from this run; no other entry's routes were copied."
 }
