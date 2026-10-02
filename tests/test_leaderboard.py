@@ -1,7 +1,8 @@
 import os
 import unittest
 
-from m3d.cli import _render_leaderboard_md, _load_manifest, _load_runtimes
+from m3d.cli import (_render_leaderboard_md, _render_readme_block, _splice_readme,
+                     _load_manifest, _load_runtimes, README_START, README_END)
 from m3d.scorer import score_submission_set, rank_submissions, pareto_frontier
 
 HARD_SUITE = "benchmarks_hard"
@@ -23,6 +24,40 @@ class TestLeaderboardRender(unittest.TestCase):
         with open("LEADERBOARD.md", encoding="utf-8") as fh:
             on_disk = fh.read().strip()
         self.assertEqual(on_disk, _render_leaderboard_md("submissions").strip())
+
+    def test_committed_readme_block_is_current(self):
+        with open("README.md", encoding="utf-8") as fh:
+            readme = fh.read()
+        self.assertIn(README_START, readme)
+        self.assertEqual(readme, _splice_readme(readme, _render_readme_block("submissions")))
+
+    def test_derivative_entries_are_marked(self):
+        import json
+        import shutil
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            for name in ("upstream", "refined", "aliased"):
+                shutil.copytree(os.path.join(HARD_SUBS, "negotiated"),
+                                os.path.join(tmp, "hard", name))
+            metas = {"upstream": {"author": "A"},
+                     "refined": {"author": "B", "derived_from": "upstream"},
+                     "aliased": {"author": "C", "warm_start": {"submission": "upstream",
+                                                               "author": "A"}}}
+            for name, meta in metas.items():
+                with open(os.path.join(tmp, "hard", name, "meta.json"), "w",
+                          encoding="utf-8") as fh:
+                    json.dump(meta, fh)
+            md = _render_leaderboard_md(tmp)
+            self.assertIn("| refined † |", md)
+            self.assertIn("| aliased † |", md)
+            self.assertIn("| upstream |", md)
+            self.assertIn("refined builds on upstream", md)
+            self.assertIn("aliased builds on upstream (A)", md)
+
+    def test_splice_replaces_only_the_block(self):
+        text = f"top\n{README_START}\nold\n{README_END}\nbottom\n"
+        out = _splice_readme(text, f"{README_START}\nnew\n{README_END}")
+        self.assertEqual(out, f"top\n{README_START}\nnew\n{README_END}\nbottom\n")
 
 
 SEED_HARD = ("negotiated", "negotiated_x2", "negotiated_fast")

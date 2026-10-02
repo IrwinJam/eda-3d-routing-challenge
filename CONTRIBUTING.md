@@ -43,7 +43,7 @@ python -m m3d.cli score-suite --suite benchmarks_<tier> \
     --submission-dir submissions/<tier>/<your-name>
 
 # regenerate the leaderboard so your entry appears
-python -m m3d.cli leaderboard-all          # writes LEADERBOARD.md
+python -m m3d.cli leaderboard-all          # writes LEADERBOARD.md + the README block
 ```
 
 (For the `intro` tier the suite dir is `benchmarks`, not `benchmarks_intro`.)
@@ -55,15 +55,16 @@ python -m m3d.cli leaderboard-all          # writes LEADERBOARD.md
 Commit **only** these paths and open a pull request:
 
 * `submissions/<tier>/<your-name>/**`
-* the regenerated `LEADERBOARD.md`
+* the regenerated `LEADERBOARD.md` and `README.md` (only its generated
+  leaderboard block changes)
 
 CI will:
 
-1. reject the PR if it modifies anything outside `submissions/**` and
-   `LEADERBOARD.md` (benchmarks and the toolkit are off-limits — that keeps scores
-   comparable);
+1. reject the PR if it modifies anything outside `submissions/**`,
+   `LEADERBOARD.md` and README.md's generated leaderboard block (benchmarks and
+   the toolkit are off-limits — that keeps scores comparable);
 2. re-check every submitted solution with `m3d/checker.py`;
-3. confirm `LEADERBOARD.md` matches a fresh `leaderboard-all` run.
+3. confirm `LEADERBOARD.md` and the README block match a fresh `leaderboard-all` run.
 
 Because the score is recomputed from your route files, you cannot fake a number —
 you can only rank higher by submitting better legal routes.
@@ -75,3 +76,9 @@ you can only rank higher by submitting better legal routes.
 * Don't modify the benchmark instances, references, or the toolkit in a submission
   PR. Toolkit changes are welcome — as separate PRs.
 * One directory per distinct method. Iterating on your own entry is fine.
+* **Derivative entries.** If your routes start from another entry's published
+  routes (a warm start, a refinement, or files carried over unchanged), say so in
+  every tier's `meta.json`:
+  `"derived_from": {"submission": "<their entry>", "author": "<their name>"}`.
+  The leaderboard marks such entries with `†` and names the upstream entry.
+  Undeclared reuse of another entry's routes may be removed.
