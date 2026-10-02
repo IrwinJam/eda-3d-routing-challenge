@@ -151,11 +151,19 @@ def score_submission_set(manifest: Dict, suite_dir: str, submission_dir: str,
             cases.append(CaseScore(inst.name, False, None, c["baseline_total"],
                                    None, rt, ["submission file missing"]))
             continue
-        cases.append(score_case(inst, Submission.load(sol), c["baseline_total"], rt))
+        try:
+            sub = Submission.load(sol)
+        except ValueError as exc:  # malformed JSON or not a valid m3d-submission
+            cases.append(CaseScore(inst.name, False, None, c["baseline_total"],
+                                   None, rt, [f"unreadable submission: {exc}"]))
+            continue
+        cases.append(score_case(inst, sub, c["baseline_total"], rt))
     lb = leaderboard(cases)
     total_delay = sum(c.total_delay for c in cases) if lb.complete else None
+    # a runtime total is only comparable when every case reports one; a partial
+    # runtime.json would otherwise sum a subset and look artificially fast
     have_rt = [c.runtime_s for c in cases if c.runtime_s is not None]
-    total_runtime = sum(have_rt) if have_rt else None
+    total_runtime = sum(have_rt) if have_rt and len(have_rt) == len(cases) else None
     return SubmissionScore(name, lb.complete, lb.aggregate_score, lb.n_legal,
                            lb.n_cases, total_delay, total_runtime, cases)
 

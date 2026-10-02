@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import sys
 import time
@@ -133,7 +134,11 @@ def cmd_baseline_suite(args: argparse.Namespace) -> int:
 
 def cmd_evaluate(args: argparse.Namespace) -> int:
     inst = Instance.load(args.case)
-    sub = Submission.load(args.sol)
+    try:
+        sub = Submission.load(args.sol)
+    except ValueError as exc:
+        print(f"{inst.name}: unreadable submission {args.sol}: {exc}")
+        return 2
     res = check(inst, sub)
     baseline_total = _baseline_total_for(args.suite, inst.name, args.baseline)
     print(f"{inst.name}: legal={res.legal} total_delay={res.total_delay}")
@@ -158,8 +163,7 @@ def cmd_score_suite(args: argparse.Namespace) -> int:
     man = _load_manifest(args.suite)
     runtimes: Dict[str, float] = {}
     if args.runtimes:
-        with open(args.runtimes) as fh:
-            runtimes = json.load(fh)
+        runtimes = _read_runtimes(args.runtimes)
     scores = []
     for c in man["cases"]:
         inst = Instance.load(os.path.join(args.suite, c["instance_file"]))
@@ -169,7 +173,13 @@ def cmd_score_suite(args: argparse.Namespace) -> int:
                                     None, runtimes.get(inst.name),
                                     ["submission file missing"]))
             continue
-        sub = Submission.load(sol_path)
+        try:
+            sub = Submission.load(sol_path)
+        except ValueError as exc:
+            scores.append(CaseScore(inst.name, False, None, c["baseline_total"],
+                                    None, runtimes.get(inst.name),
+                                    [f"unreadable submission: {exc}"]))
+            continue
         scores.append(score_case(inst, sub, c["baseline_total"],
                                  runtimes.get(inst.name)))
     lb = leaderboard(scores)
@@ -244,14 +254,23 @@ def cmd_run_suite(args: argparse.Namespace) -> int:
     return 0 if ok else 3
 
 
+def _read_runtimes(path: str) -> Dict[str, float]:
+    """Read a {case: seconds} file, keeping only finite, non-negative numbers."""
+    try:
+        with open(path, encoding="utf-8-sig") as fh:
+            data = json.load(fh)
+    except (OSError, ValueError):
+        return {}
+    if not isinstance(data, dict):
+        return {}
+    return {k: float(v) for k, v in data.items()
+            if isinstance(v, (int, float)) and not isinstance(v, bool)
+            and math.isfinite(v) and v >= 0}
+
+
 def _load_runtimes(submission_dir: str) -> Dict[str, float]:
     path = os.path.join(submission_dir, "runtime.json")
-    if os.path.exists(path):
-        try:
-            return {k: float(v) for k, v in json.load(open(path)).items()}
-        except Exception:
-            return {}
-    return {}
+    return _read_runtimes(path) if os.path.exists(path) else {}
 
 
 def _submission_entries(root: str):
@@ -318,10 +337,17 @@ def _load_meta(submission_dir: str) -> dict:
     path = os.path.join(submission_dir, "meta.json")
     if os.path.exists(path):
         try:
-            return json.load(open(path))
-        except Exception:
+            with open(path, encoding="utf-8-sig") as fh:
+                meta = json.load(fh)
+        except (OSError, ValueError):
             return {}
+        return meta if isinstance(meta, dict) else {}
     return {}
+
+
+def _md_cell(value) -> str:
+    """One Markdown table cell: collapse whitespace/newlines and escape '|'."""
+    return " ".join(str(value).split()).replace("|", "\\|")
 
 
 def _render_leaderboard_md(root: str) -> str:
@@ -364,8 +390,8 @@ def _render_leaderboard_md(root: str) -> str:
             agg = f"{s.aggregate:.4f}" if s.complete else "—"
             td = s.total_delay if s.total_delay is not None else "—"
             rt = f"{s.total_runtime:.2f}" if s.total_runtime is not None else "—"
-            author = (metas.get(s.name, {}).get("author") or "—")
-            lines.append(f"| {i} | {s.name} | {author} | {agg} | "
+            author = _md_cell(metas.get(s.name, {}).get("author") or "—")
+            lines.append(f"| {i} | {_md_cell(s.name)} | {author} | {agg} | "
                          f"{s.n_legal}/{s.n_cases} | {td} | {rt} | "
                          f"{'✓' if s.name in frontier else ''} |")
         lines.append("")

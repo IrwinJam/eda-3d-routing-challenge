@@ -11,7 +11,8 @@ Usage: python scripts/verify_submissions.py [submissions_root]
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, REPO_ROOT)
 
 from m3d.model import Instance, Submission           # noqa: E402
 from m3d.checker import check                         # noqa: E402
@@ -30,7 +31,11 @@ def main(root: str = "submissions") -> int:
         return 0
     for tier in sorted(os.listdir(root)):
         troot = os.path.join(root, tier)
+        # tier suites live at the repo root; resolve them from there so the
+        # script also works when run from another directory
         suite_dir = tier_dirs.get(tier)
+        if suite_dir and not os.path.isabs(suite_dir):
+            suite_dir = os.path.join(REPO_ROOT, suite_dir)
         if not os.path.isdir(troot) or tier.startswith("_"):
             continue
         if not suite_dir or not os.path.exists(os.path.join(suite_dir, "suite.json")):
@@ -56,7 +61,11 @@ def main(root: str = "submissions") -> int:
                 if res.legal:
                     legal += 1
                 else:
-                    errors.append(f"{tier}/{name}/{cname}: ILLEGAL — {res.reasons}")
+                    why = list(res.reasons) + [
+                        f"net {n.net}: " + "; ".join(n.reasons or ["illegal"])
+                        for n in res.nets if not n.legal]
+                    more = f" (+{len(why) - 5} more)" if len(why) > 5 else ""
+                    errors.append(f"{tier}/{name}/{cname}: ILLEGAL — {why[:5]}{more}")
             status = "complete" if legal == len(insts) else "incomplete"
             print(f"  {tier}/{name}: {legal}/{len(insts)} legal "
                   f"({present} present) [{status}]")

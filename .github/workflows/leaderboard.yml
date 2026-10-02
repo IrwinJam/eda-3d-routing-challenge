@@ -16,9 +16,13 @@ jobs:
           fetch-depth: 0
       - name: Guard paths on submission PRs
         run: |
-          git fetch origin "${{ github.base_ref }}" --depth=1
+          # fetch-depth: 0 already provides the full base branch; re-fetching it
+          # shallowly breaks the merge-base lookup once the base has moved on.
+          # --no-renames lists a rename as delete + add (so moving a file out of
+          # a protected path is caught), and quotePath=false keeps non-ASCII
+          # paths unquoted so they still match ^submissions/.
           base="origin/${{ github.base_ref }}"
-          changed="$(git diff --name-only "$base"...HEAD)"
+          changed="$(git -c core.quotePath=false diff --name-only --no-renames "$base"...HEAD)"
           echo "Changed files:"; echo "$changed"
           if echo "$changed" | grep -q '^submissions/'; then
             bad="$(echo "$changed" | grep -vE '^(submissions/|LEADERBOARD\.md$)' || true)"
