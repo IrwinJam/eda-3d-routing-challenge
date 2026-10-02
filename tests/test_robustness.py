@@ -4,6 +4,7 @@ Malformed or unusual participant files must be reported as illegal (or ignored,
 for optional metadata), never crash the toolkit or silently pass.
 """
 import json
+import math
 import os
 import shutil
 import subprocess
@@ -105,6 +106,16 @@ class TestScoringRobustness(unittest.TestCase):
         self.assertIsNotNone(full.total_runtime)
         self.assertIsNone(partial.total_runtime)
         self.assertNotIn("partial", pareto_frontier([full, partial]))
+
+    def test_runtime_total_is_independent_of_python_version(self):
+        # plain float sum() rounds differently on 3.12+ (these values sum to
+        # 0.9999999999999999 before, 1.0 after); the total must match everywhere
+        man = _load_manifest(HARD)
+        d = os.path.join("submissions", "hard", "negotiated")
+        rts = {c["name"]: 0.1 for c in man["cases"]}
+        rts["case_01"] = 0.1 * 2
+        s = score_submission_set(man, HARD, d, "x", rts)
+        self.assertEqual(s.total_runtime, math.fsum(rts.values()))
 
     def test_invalid_runtime_values_are_ignored(self):
         with tempfile.TemporaryDirectory() as tmp:
