@@ -25,11 +25,20 @@ jobs:
           changed="$(git -c core.quotePath=false diff --name-only --no-renames "$base"...HEAD)"
           echo "Changed files:"; echo "$changed"
           if echo "$changed" | grep -q '^submissions/'; then
-            bad="$(echo "$changed" | grep -vE '^(submissions/|LEADERBOARD\.md$)' || true)"
+            bad="$(echo "$changed" | grep -vE '^(submissions/|LEADERBOARD\.md$|README\.md$)' || true)"
             if [ -n "$bad" ]; then
-              echo "::error::A submission PR may only change submissions/** and LEADERBOARD.md."
+              echo "::error::A submission PR may only change submissions/**, LEADERBOARD.md and the generated leaderboard block of README.md."
               echo "Disallowed changes:"; echo "$bad"
               exit 1
+            fi
+            # README.md: only the generated leaderboard block may change
+            if echo "$changed" | grep -qx 'README.md'; then
+              strip() { sed '/^<!-- leaderboard:start/,/^<!-- leaderboard:end -->/d'; }
+              if ! diff <(git show "$base:README.md" | strip) <(strip < README.md) > /dev/null; then
+                echo "::error::A submission PR may only change README.md inside the generated leaderboard block."
+                diff <(git show "$base:README.md" | strip) <(strip < README.md) || true
+                exit 1
+              fi
             fi
           fi
 
