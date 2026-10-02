@@ -17,7 +17,7 @@ do not edit it by hand.
 | 4 | spt_lns | James (IrwinJam) | 1.1383 | 20/20 | 347680 | 5141.43 | ✓ |
 | 5 | anvesh | anvesh | 1.1069 | 20/20 | 360172 | — |  |
 | 6 | lns_negotiated | adityuhkapoor | 1.0937 | 20/20 | 367388 | — |  |
-| 7 | negotiated_delay | Mantej Singh Gill | 1.0906 | 20/20 | 368046 | 752.30 | ✓ |
+| 7 | negotiated_delay | Mantej Singh Gill | 1.0906 | 20/20 | 368046 | 752.29 | ✓ |
 | 8 | drama3d-portfolio | YJ Kim | 1.0830 | 20/20 | 373232 | — |  |
 | 9 | shivaahir158 | Shiva Ahir (PhD Candidate, Stony Brook University) | 1.0274 | 20/20 | 388638 | 440.56 | ✓ |
 
@@ -35,8 +35,8 @@ do not edit it by hand.
 | 6 | erikqu_root_aware_portfolio | erikqu | 1.2745 | 9/9 | 158455 | — |  |
 | 7 | lns_negotiated | adityuhkapoor | 1.2267 | 9/9 | 165367 | — |  |
 | 8 | anvesh | anvesh | 1.1863 | 9/9 | 169737 | — |  |
-| 9 | negotiated_delay | Mantej Singh Gill | 1.1499 | 9/9 | 175879 | 105.40 | ✓ |
-| 10 | iamparv7043 | Parv (iamparv7043) | 1.1495 | 9/9 | 175851 | 159.67 | ✓ |
+| 9 | negotiated_delay | Mantej Singh Gill | 1.1499 | 9/9 | 175879 | 105.39 | ✓ |
+| 10 | iamparv7043 | Parv (iamparv7043) | 1.1495 | 9/9 | 175851 | 159.66 | ✓ |
 | 11 | drama3d-portfolio | YJ Kim | 1.1121 | 9/9 | 181919 | — |  |
 | 12 | shivaahir158 | Shiva Ahir (PhD Candidate, Stony Brook University) | 1.0508 | 9/9 | 192507 | 787.30 |  |
 | 13 | negotiated_x2 | Anthropic (reference) | 1.0168 | 9/9 | 198763 | 177.01 |  |
