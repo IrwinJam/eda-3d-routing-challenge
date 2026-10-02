@@ -1,0 +1,26 @@
+{
+  "author": "jay-tau",
+  "url": "https://github.com/jay-tau",
+  "method": "Exact A* and bounded group refinement of credited pathfinder_lns public warm starts; best legal route per case.",
+  "date": "2026-09-30",
+  "snapshot_at_utc": "2026-09-30T15:28:35.117491+00:00",
+  "warm_start": {
+    "author": "Taz33m",
+    "submission": "pathfinder_lns",
+    "pull_request": "https://github.com/partcleda/eda-3d-routing-challenge/pull/3",
+    "commit": "a5ef5e2406682473b99c6496a87a6279b64db9ba"
+  },
+  "selection": "Lowest checker-recomputed delay; original route retained on ties.",
+  "runtime": "Omitted: incremental trial times do not include generation of the public warm starts.",
+  "cases": [
+    {
+      "case": "case_01",
+      "warm_start_delay": 1049818,
+      "total_delay": 1049764,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "1e041671470e4a67686a9ce50f1445eb23d2c8c646350e654ad8c428c7f3228b",
+      "route_sha256": "87f06054ef25ff3f84058490d78099f8271b3f28fa34164809897a07398c3821"
+    }
+  ]
+}

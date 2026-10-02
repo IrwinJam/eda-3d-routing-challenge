@@ -1,0 +1,5 @@
+{
+ "author": "Mantej Singh Gill",
+ "date": "2026-10-01",
+ "method": "Negotiated-congestion to legality, then per-net refinement with shortest-path (per-sink) trees at true delay; seeded cost jitter; one fixed config for all tiers"
+}

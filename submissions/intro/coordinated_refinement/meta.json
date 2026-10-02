@@ -1,0 +1,197 @@
+{
+  "author": "jay-tau",
+  "url": "https://github.com/jay-tau",
+  "method": "Exact A* and bounded group refinement of credited pathfinder_lns public warm starts; best legal route per case.",
+  "date": "2026-09-30",
+  "snapshot_at_utc": "2026-09-30T15:28:35.117491+00:00",
+  "warm_start": {
+    "author": "Taz33m",
+    "submission": "pathfinder_lns",
+    "pull_request": "https://github.com/partcleda/eda-3d-routing-challenge/pull/3",
+    "commit": "a5ef5e2406682473b99c6496a87a6279b64db9ba"
+  },
+  "selection": "Lowest checker-recomputed delay; original route retained on ties.",
+  "runtime": "Omitted: incremental trial times do not include generation of the public warm starts.",
+  "cases": [
+    {
+      "case": "case_01",
+      "warm_start_delay": 206,
+      "total_delay": 206,
+      "strict_improvement": false,
+      "method": "retained original route",
+      "warm_start_sha256": "104576b698eed282f89f707e4085fed7de6e58e3b27623cc941dc3913062433a",
+      "route_sha256": "1a9405620bb1a6bb81b1d49362cec062e6ddfda9bdeded91827f45840909033d"
+    },
+    {
+      "case": "case_02",
+      "warm_start_delay": 1030,
+      "total_delay": 1030,
+      "strict_improvement": false,
+      "method": "retained original route",
+      "warm_start_sha256": "65edbed9c9350912b32782bec9e9afa363d89abfba11b38af179f25e0f58e31b",
+      "route_sha256": "869dde18e969ace0c7f60a7355bf94793fb42ab47cae59aae2ab0d1b55ff3620"
+    },
+    {
+      "case": "case_03",
+      "warm_start_delay": 1611,
+      "total_delay": 1611,
+      "strict_improvement": false,
+      "method": "retained original route",
+      "warm_start_sha256": "4dfadbc4166a0eb849ac2265fea122f92f381a24d4b3f8cfa503ea10cd30388a",
+      "route_sha256": "f166ba7a1858a19f8af4168f205e9c2a67afc0dc869fbd62d69bead8ea44df7a"
+    },
+    {
+      "case": "case_04",
+      "warm_start_delay": 1980,
+      "total_delay": 1980,
+      "strict_improvement": false,
+      "method": "retained original route",
+      "warm_start_sha256": "6f5b010143985922f060a171a657be6e05994b8bb9ae3d00c3e82f07b00508df",
+      "route_sha256": "584dbfbeaaa6cb307d64ffdac1fb0422a9599d042d4090d2bfd87c08de653d26"
+    },
+    {
+      "case": "case_05",
+      "warm_start_delay": 3691,
+      "total_delay": 3691,
+      "strict_improvement": false,
+      "method": "retained original route",
+      "warm_start_sha256": "7f547495826a7a4784aa24fc7d5266f5928351bff1c5da8535f3c5203a5e9ff9",
+      "route_sha256": "052052b4de5b30619b26c1719b36b43a0da7a4b63fd6997665600663681998d5"
+    },
+    {
+      "case": "case_06",
+      "warm_start_delay": 5203,
+      "total_delay": 5201,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "90c048f8c5f4f179e20948a004ba8fcf2c8a0c74bf88ede7c0e6c8ceecb12178",
+      "route_sha256": "e83c851456013ebfc9305bf0954755ad13d107b86985c2156e250256a8a61b48"
+    },
+    {
+      "case": "case_07",
+      "warm_start_delay": 5275,
+      "total_delay": 5263,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "946e64766e86c12f24c32e8bbe2cdba7bd4d4eccc76de9d0fc72416363530e5b",
+      "route_sha256": "bd3bc34df08d4c7e6b91de075f7c57e285487a8c01f86454c80a1e83ccb5a456"
+    },
+    {
+      "case": "case_08",
+      "warm_start_delay": 7505,
+      "total_delay": 7505,
+      "strict_improvement": false,
+      "method": "retained original route",
+      "warm_start_sha256": "f1439efac7c4ee65fea39878084f9e32549295dccf82bc0db33d1f7003dd16b1",
+      "route_sha256": "476f31c7e38cee2835d26d08bcbf977006c2d9cbd7d544a6fe80d01295cfd3b5"
+    },
+    {
+      "case": "case_09",
+      "warm_start_delay": 8164,
+      "total_delay": 8156,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "2a5c913985c3c9e084f3d536b83f9514c0960174d41518883857319ec88978c1",
+      "route_sha256": "60aa6f91eaac5959745f8ca2a1705e94eca1c37c24061280b1b6facbbc361e37"
+    },
+    {
+      "case": "case_10",
+      "warm_start_delay": 10567,
+      "total_delay": 10561,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "43986d568090eb220241d35d75694f38b3f8576e81ebea2a703e82c2cc75c5a7",
+      "route_sha256": "e653d2aa50b6a0af508c7d337f944999bfab07ce59d09e0f3cd7e6c38d7a213a"
+    },
+    {
+      "case": "case_11",
+      "warm_start_delay": 12232,
+      "total_delay": 12198,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "e306089dc874497f0e3672c41acc7fdd0af1e502259f17e568f5dfd493d0a3c9",
+      "route_sha256": "f80e33ae3c65eacd9f9e535ae52446ae96e2a205c6afe8968b658fead081a1cc"
+    },
+    {
+      "case": "case_12",
+      "warm_start_delay": 16127,
+      "total_delay": 16109,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "89af88286c816832bc39664d138a18d8c897f7c3abbb261c25b5ecc8c4b11b68",
+      "route_sha256": "445e54cdd76edb5ae2bdfd71fc1fada777c7406e7be51d5eb2973d68f12c7e5c"
+    },
+    {
+      "case": "case_13",
+      "warm_start_delay": 19633,
+      "total_delay": 19621,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "5db8c38fc6d1969885f74a626d1184bff5ec8a0e1c73836e4b052e1e28b33e7c",
+      "route_sha256": "0a08d7d9cf341d8f195704cbf3b9b18097188e356f0da31afbc279212cfcd8f9"
+    },
+    {
+      "case": "case_14",
+      "warm_start_delay": 21257,
+      "total_delay": 21235,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "30e1705b05cae53aee168c08c9a7522d4e1c4e48ad50b2f770f8924bc9de5bf2",
+      "route_sha256": "2d4e867617e69cc1877f9af230cfc7432d561f52f7c451db46b35d3485d67af5"
+    },
+    {
+      "case": "case_15",
+      "warm_start_delay": 24014,
+      "total_delay": 23978,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "2db621cba14186e6f7c822d2a180d2e75a18fcd9b7ae80b255b5e3e286aa9558",
+      "route_sha256": "75e8b6bb8094c7c3e9fcdadf041d250748f6e44d46c91f12c7583d1a4be0b178"
+    },
+    {
+      "case": "case_16",
+      "warm_start_delay": 32960,
+      "total_delay": 32906,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "288eb5e3fff034812991f34e0d42956c3feed75627f7213c11339752491d867c",
+      "route_sha256": "28282942a68b2d81b0f1adadac1359fc098bd5e717c2ed2ba5a6f6793fef369b"
+    },
+    {
+      "case": "case_17",
+      "warm_start_delay": 41828,
+      "total_delay": 41810,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "2d7aae434f64cdfd94f7c08f57d077917717ff792bc9e5a2ac3c5f357e5e06cd",
+      "route_sha256": "26e6ecdfbaeac547f7260bf13ccf96cc420af4edebab0b71d990cac4f396cce9"
+    },
+    {
+      "case": "case_18",
+      "warm_start_delay": 44771,
+      "total_delay": 44683,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "f2dd1831c2a92cfbd698e27ac08fb34792693d3f37e3b4706af3a26642a85a50",
+      "route_sha256": "b04bd7f9b3a0956d126c73a1b4a8b4dacc452b929dd90349f9f2514df35d62ea"
+    },
+    {
+      "case": "case_19",
+      "warm_start_delay": 40076,
+      "total_delay": 40060,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "6826b0795e96bc0d556cea082aa5ec19c0d4d2b1006401d6fdeb0d739fbaff02",
+      "route_sha256": "e923908ddb88ceeb93bdf2239fdcea7bc29fe572c9728731c8f6e03375bed101"
+    },
+    {
+      "case": "case_20",
+      "warm_start_delay": 44784,
+      "total_delay": 44774,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "fbe48fd3d99f785d9ee81ba5e3d3eb2b78ff7864b6534f193160e18967cfb516",
+      "route_sha256": "9cd372124a46d674a53b7684149f5a4bbac91d0b8ea09e0f8044cdfa9d6aca00"
+    }
+  ]
+}

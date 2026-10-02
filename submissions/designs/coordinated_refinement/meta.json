@@ -1,0 +1,44 @@
+{
+  "author": "jay-tau",
+  "url": "https://github.com/jay-tau",
+  "method": "Exact A* and bounded group refinement of credited pathfinder_lns public warm starts; best legal route per case.",
+  "date": "2026-09-30",
+  "snapshot_at_utc": "2026-09-30T15:28:35.117491+00:00",
+  "warm_start": {
+    "author": "Taz33m",
+    "submission": "pathfinder_lns",
+    "pull_request": "https://github.com/partcleda/eda-3d-routing-challenge/pull/3",
+    "commit": "a5ef5e2406682473b99c6496a87a6279b64db9ba"
+  },
+  "selection": "Lowest checker-recomputed delay; original route retained on ties.",
+  "runtime": "Omitted: incremental trial times do not include generation of the public warm starts.",
+  "cases": [
+    {
+      "case": "ctrl",
+      "warm_start_delay": 50340,
+      "total_delay": 50256,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "44b844c57fa382444692ceffb64fb697c999f91855fe20afbbd0a3a5d3109429",
+      "route_sha256": "bddffc0fe328e9c511d2c7d5ba086611570b8b80d062ce30992bf3f7e02c78bd"
+    },
+    {
+      "case": "int2float",
+      "warm_start_delay": 91270,
+      "total_delay": 91200,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "c149aa6d7ea8cdf3de46515e21920cc930432220a6ae7196052b756fb565e967",
+      "route_sha256": "e5893acba8494226b88781cdbcf1e187e5ee338e515b471bed527b8a2cb7e41b"
+    },
+    {
+      "case": "router",
+      "warm_start_delay": 69237,
+      "total_delay": 69183,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "e198155e15deaf58598165c22d1948cbafcbc45d80c34480108f1a0e7f83c35f",
+      "route_sha256": "02da4acef7cb7213caf6a7f6f830cc328576902b7db930f2ec198efa8e054093"
+    }
+  ]
+}

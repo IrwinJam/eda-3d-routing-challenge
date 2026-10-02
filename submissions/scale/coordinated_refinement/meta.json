@@ -1,0 +1,89 @@
+{
+  "author": "jay-tau",
+  "url": "https://github.com/jay-tau",
+  "method": "Exact A* and bounded group refinement of credited pathfinder_lns public warm starts; best legal route per case.",
+  "date": "2026-09-30",
+  "snapshot_at_utc": "2026-09-30T15:28:35.117491+00:00",
+  "warm_start": {
+    "author": "Taz33m",
+    "submission": "pathfinder_lns",
+    "pull_request": "https://github.com/partcleda/eda-3d-routing-challenge/pull/3",
+    "commit": "a5ef5e2406682473b99c6496a87a6279b64db9ba"
+  },
+  "selection": "Lowest checker-recomputed delay; original route retained on ties.",
+  "runtime": "Omitted: incremental trial times do not include generation of the public warm starts.",
+  "cases": [
+    {
+      "case": "case_01",
+      "warm_start_delay": 39430,
+      "total_delay": 39398,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "d9f34f08963a429cc1310ab437f184e46d534590ca7d95f861e3603c4bcdcec0",
+      "route_sha256": "9d5714738afb21ba016e335a7a7d04badb6157e234f9bd43bc827e51936e98ce"
+    },
+    {
+      "case": "case_02",
+      "warm_start_delay": 45588,
+      "total_delay": 45508,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "b2d60fd18c18adc566cb29848add2fc96d2c0edcc5842811ed9de8c7fe67a25c",
+      "route_sha256": "c521d6786d2f8382051204d4f3638135c55f2c0100e325cd4efc29a9f979848f"
+    },
+    {
+      "case": "case_03",
+      "warm_start_delay": 56634,
+      "total_delay": 56530,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "7582fe82d54d4f084289b3923974a5c13b422fbb8ac513183aadc90551fd23ba",
+      "route_sha256": "55d9834ce3ddb7bba5b3cf002f799ba4b20f42f073df11c58fc37a88f59abda0"
+    },
+    {
+      "case": "case_04",
+      "warm_start_delay": 57256,
+      "total_delay": 57190,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "07cd77bcc0b9d81850bfe78cb71246b5cace6500a4bef8e60ead2c931bd55848",
+      "route_sha256": "464500d36e8ba7626047f524e056da17789636231e814ef43597623c0519134a"
+    },
+    {
+      "case": "case_05",
+      "warm_start_delay": 66439,
+      "total_delay": 66361,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "a08a2dbbbb25655f5942b65e7a2d3222de3a74c1f8ce446053fdb914bcbcc19e",
+      "route_sha256": "b694a492db4d88cb7776366d3ddaae168c23c32aa9f34bd7d53edb17b9cc6309"
+    },
+    {
+      "case": "case_06",
+      "warm_start_delay": 78455,
+      "total_delay": 78349,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "a3a007a604d71ff402046c2e07b6dc8c8c68af6f4003cd41ceeb89955459f23a",
+      "route_sha256": "9334968a163594145d1c47670354a508f2a335c60945a16fcbf3e8eb47967789"
+    },
+    {
+      "case": "case_07",
+      "warm_start_delay": 86673,
+      "total_delay": 86611,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "f453c0fac0ce4ba66e9ec5e0e8205458ecdb2d51b9a6f667553d3b6b78ff4034",
+      "route_sha256": "0f7b32d7c7794a957341b3d98c5690219f1578ce759ca67e944cb41a3fde8f9b"
+    },
+    {
+      "case": "case_08",
+      "warm_start_delay": 109029,
+      "total_delay": 108929,
+      "strict_improvement": true,
+      "method": "exact and group refinement",
+      "warm_start_sha256": "5d49bb7e6e1cf4399f567e3044bb236684b381a72e7fbd5955921acbd9f07c3e",
+      "route_sha256": "e0a5ae3e94f3a5f42bf2d40b9c596c3299b8ff53898eebf2b27a280a497ea037"
+    }
+  ]
+}

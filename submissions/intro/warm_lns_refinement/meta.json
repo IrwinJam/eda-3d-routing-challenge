@@ -1,0 +1,167 @@
+{
+ "author": "kesudh",
+ "url": "https://github.com/kesudh",
+ "method": "Rust warm-start large-neighborhood search: exact per-net SPT reroute with equal-delay tie exploration, group rip-up with negotiated-congestion rounds (PathFinder-style history/present costs), bounded threshold acceptance; every accepted state re-verified by the repository checker.",
+ "date": "2026-10-01",
+ "warm_start": {
+  "author": "Taz33m",
+  "submission": "pathfinder_lns",
+  "pull_request": "https://github.com/partcleda/eda-3d-routing-challenge/pull/3",
+  "commit": "4e21227"
+ },
+ "upstream_credit": {
+  "author": "Taz33m",
+  "submission": "pathfinder_lns",
+  "pull_request": "https://github.com/partcleda/eda-3d-routing-challenge/pull/3",
+  "commit": "4e21227867ee1f8f72c9f4d9ad446e05c20fe452",
+  "note": "Warm starts are PR#3's routes at head 4e21227, the version that led all six tier aggregates before this refinement."
+ },
+ "selection": "Lowest checker-recomputed delay across the warm start and every refinement run; the warm-start route is retained verbatim (identical sha256) on cases with no strict win.",
+ "runtime": "Per-case wall seconds of the incremental refinement only; excludes warm-start generation.",
+ "tier": "intro",
+ "aggregate": 1.15087837,
+ "warm_start_aggregate": 1.15082522,
+ "legal": "20/20",
+ "cases": [
+  {
+   "case": "case_01",
+   "warm_start_delay": 206,
+   "total_delay": 206,
+   "delta": 0,
+   "method": "own earlier route (ties PR#3)"
+  },
+  {
+   "case": "case_02",
+   "warm_start_delay": 1030,
+   "total_delay": 1030,
+   "delta": 0,
+   "method": "own earlier route (ties PR#3)"
+  },
+  {
+   "case": "case_03",
+   "warm_start_delay": 1611,
+   "total_delay": 1611,
+   "delta": 0,
+   "method": "own earlier route (ties PR#3)"
+  },
+  {
+   "case": "case_04",
+   "warm_start_delay": 1980,
+   "total_delay": 1980,
+   "delta": 0,
+   "method": "own earlier route (ties PR#3)"
+  },
+  {
+   "case": "case_05",
+   "warm_start_delay": 3687,
+   "total_delay": 3687,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  },
+  {
+   "case": "case_06",
+   "warm_start_delay": 5189,
+   "total_delay": 5189,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  },
+  {
+   "case": "case_07",
+   "warm_start_delay": 5267,
+   "total_delay": 5263,
+   "delta": 4,
+   "method": "refined (rust LNS)"
+  },
+  {
+   "case": "case_08",
+   "warm_start_delay": 7487,
+   "total_delay": 7487,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  },
+  {
+   "case": "case_09",
+   "warm_start_delay": 8144,
+   "total_delay": 8144,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  },
+  {
+   "case": "case_10",
+   "warm_start_delay": 10551,
+   "total_delay": 10551,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  },
+  {
+   "case": "case_11",
+   "warm_start_delay": 12200,
+   "total_delay": 12198,
+   "delta": 2,
+   "method": "refined (rust LNS)"
+  },
+  {
+   "case": "case_12",
+   "warm_start_delay": 16093,
+   "total_delay": 16093,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  },
+  {
+   "case": "case_13",
+   "warm_start_delay": 19593,
+   "total_delay": 19593,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  },
+  {
+   "case": "case_14",
+   "warm_start_delay": 21197,
+   "total_delay": 21197,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  },
+  {
+   "case": "case_15",
+   "warm_start_delay": 23938,
+   "total_delay": 23938,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  },
+  {
+   "case": "case_16",
+   "warm_start_delay": 32866,
+   "total_delay": 32866,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  },
+  {
+   "case": "case_17",
+   "warm_start_delay": 41622,
+   "total_delay": 41622,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  },
+  {
+   "case": "case_18",
+   "warm_start_delay": 44601,
+   "total_delay": 44601,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  },
+  {
+   "case": "case_19",
+   "warm_start_delay": 40024,
+   "total_delay": 40024,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  },
+  {
+   "case": "case_20",
+   "warm_start_delay": 44726,
+   "total_delay": 44726,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  }
+ ]
+}
