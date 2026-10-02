@@ -100,7 +100,9 @@ def leaderboard(case_scores: List[CaseScore]) -> Leaderboard:
     n_legal = sum(1 for c in case_scores if c.legal)
     complete = n > 0 and n_legal == n
     if complete:
-        log_sum = sum(math.log(c.ratio) for c in case_scores if c.ratio)
+        # math.fsum is correctly rounded, so scores do not depend on the Python
+        # version (3.12 changed float sum() to compensated summation)
+        log_sum = math.fsum(math.log(c.ratio) for c in case_scores if c.ratio)
         aggregate = math.exp(log_sum / n)
     else:
         aggregate = 0.0
@@ -163,7 +165,7 @@ def score_submission_set(manifest: Dict, suite_dir: str, submission_dir: str,
     # a runtime total is only comparable when every case reports one; a partial
     # runtime.json would otherwise sum a subset and look artificially fast
     have_rt = [c.runtime_s for c in cases if c.runtime_s is not None]
-    total_runtime = sum(have_rt) if have_rt and len(have_rt) == len(cases) else None
+    total_runtime = math.fsum(have_rt) if have_rt and len(have_rt) == len(cases) else None
     return SubmissionScore(name, lb.complete, lb.aggregate_score, lb.n_legal,
                            lb.n_cases, total_delay, total_runtime, cases)
 
