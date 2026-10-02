@@ -1,0 +1,90 @@
+{
+ "author": "kesudh",
+ "url": "https://github.com/kesudh",
+ "method": "Rust warm-start large-neighborhood search: exact per-net SPT reroute with equal-delay tie exploration, group rip-up with negotiated-congestion rounds (PathFinder-style history/present costs), bounded threshold acceptance; every accepted state re-verified by the repository checker.",
+ "date": "2026-10-01",
+ "warm_start": {
+  "author": "Taz33m",
+  "submission": "pathfinder_lns",
+  "pull_request": "https://github.com/partcleda/eda-3d-routing-challenge/pull/3",
+  "commit": "4e21227"
+ },
+ "upstream_credit": {
+  "author": "Taz33m",
+  "submission": "pathfinder_lns",
+  "pull_request": "https://github.com/partcleda/eda-3d-routing-challenge/pull/3",
+  "commit": "4e21227867ee1f8f72c9f4d9ad446e05c20fe452",
+  "note": "Warm starts are PR#3's routes at head 4e21227, the version that led all six tier aggregates before this refinement."
+ },
+ "selection": "Lowest checker-recomputed delay across the warm start and every refinement run; the warm-start route is retained verbatim (identical sha256) on cases with no strict win.",
+ "runtime": "Per-case wall seconds of the incremental refinement only; excludes warm-start generation.",
+ "tier": "hard",
+ "aggregate": 1.38739417,
+ "warm_start_aggregate": 1.38736633,
+ "legal": "9/9",
+ "cases": [
+  {
+   "case": "case_01",
+   "warm_start_delay": 8666,
+   "total_delay": 8666,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  },
+  {
+   "case": "case_02",
+   "warm_start_delay": 13156,
+   "total_delay": 13156,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  },
+  {
+   "case": "case_03",
+   "warm_start_delay": 11074,
+   "total_delay": 11072,
+   "delta": 2,
+   "method": "refined (rust LNS)"
+  },
+  {
+   "case": "case_04",
+   "warm_start_delay": 13059,
+   "total_delay": 13059,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  },
+  {
+   "case": "case_05",
+   "warm_start_delay": 15211,
+   "total_delay": 15211,
+   "delta": 0,
+   "method": "own earlier route (ties PR#3)"
+  },
+  {
+   "case": "case_06",
+   "warm_start_delay": 19786,
+   "total_delay": 19786,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  },
+  {
+   "case": "case_07",
+   "warm_start_delay": 21295,
+   "total_delay": 21295,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  },
+  {
+   "case": "case_08",
+   "warm_start_delay": 21432,
+   "total_delay": 21432,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  },
+  {
+   "case": "case_09",
+   "warm_start_delay": 21418,
+   "total_delay": 21418,
+   "delta": 0,
+   "method": "PR#3 route verbatim"
+  }
+ ]
+}
