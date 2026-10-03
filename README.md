@@ -57,10 +57,10 @@ Submit by pull request; see [CONTRIBUTING.md](CONTRIBUTING.md). Also in [LEADERB
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto | verified |
 |---:|---|---|---:|:---:|---:|---:|:---:|:---:|
-| 1 | pathfinder_lns | Tazeem Mahashin | 1.3884 | 9/9 | 144991 | — |  | — |
-| 2 | warm_lns_refinement † | kesudh | 1.3874 | 9/9 | 145095 | — |  | — |
-| 3 | coordinated_refinement † | jay-tau | 1.3858 | 9/9 | 145305 | — |  | — |
-| 4 | spt_lns | James (IrwinJam) | 1.3845 | 9/9 | 145561 | — |  | — |
+| 1 | spt_lns | James (IrwinJam) | 1.3893 | 9/9 | 144929 | — |  | — |
+| 2 | pathfinder_lns | Tazeem Mahashin | 1.3884 | 9/9 | 144991 | — |  | — |
+| 3 | warm_lns_refinement † | kesudh | 1.3874 | 9/9 | 145095 | — |  | — |
+| 4 | coordinated_refinement † | jay-tau | 1.3858 | 9/9 | 145305 | — |  | — |
 | 5 | reubalink | reubalink | 1.3622 | 9/9 | 147825 | — |  | — |
 | 6 | erikqu_root_aware_portfolio | erikqu | 1.2745 | 9/9 | 158455 | — |  | — |
 | 7 | lns_negotiated | adityuhkapoor | 1.2267 | 9/9 | 165367 | — |  | — |
