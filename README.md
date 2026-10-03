@@ -57,7 +57,7 @@ Submit by pull request; see [CONTRIBUTING.md](CONTRIBUTING.md). Also in [LEADERB
 
 | rank | submission | author | aggregate | legal | total delay | runtime (s) | Pareto | verified |
 |---:|---|---|---:|:---:|---:|---:|:---:|:---:|
-| 1 | spt_lns | James (IrwinJam) | 1.3958 | 9/9 | 144239 | — |  | — |
+| 1 | spt_lns | James (IrwinJam) | 1.3971 | 9/9 | 144153 | — |  | — |
 | 2 | pathfinder_lns | Tazeem Mahashin | 1.3884 | 9/9 | 144991 | — |  | — |
 | 3 | warm_lns_refinement † | kesudh | 1.3874 | 9/9 | 145095 | — |  | — |
 | 4 | coordinated_refinement † | jay-tau | 1.3858 | 9/9 | 145305 | — |  | — |
